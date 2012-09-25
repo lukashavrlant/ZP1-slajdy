@@ -43,7 +43,7 @@
     \item V jednom projektu může být jen jedna \texttt{main} funkce. 
     \item Pro různé úlohy buď vytvářet nové projekty\dots
     \item \dots nebo všechno cpát do jedné \texttt{main} funkce.
-    \item Nepoužívejte nikde diakritiku: \texttt{Ahoj světě!} $\longrightarrow$ \texttt{Ahoj svete!}
+    \item Nepoužívejte nikde diakritiku: \texttt{Ahoj světe!} $\longrightarrow$ \texttt{Ahoj svete!}
   \end{itemizex}
 \end{frame}
 
@@ -85,12 +85,41 @@ int main() {
     \item Typ \texttt{short} se používá pro čísla malého rozsahu.
     \item Např. počet studentů v ročníku uložíme do \texttt{short}.
     \item Rozsah \texttt{short}u: od -32768 do 32767.
-    \item Na uložení malých čísel jako $0.000023$ použijeme typ \texttt{double}!
-    \item Nejjednodušší je používat \texttt{char} pro znaky, \texttt{int} pro celá čísla a \texttt{double} pro racionální čísla.
-    \item V \texttt{printf} pak \texttt{\%c} pro znaky, \texttt{\%d} (nebo \texttt{\%i}) pro celá čísla a \texttt{\%g} pro racionální čísla.
+    \item Malé číslo jako je \texttt{0.00054} uložíme do \texttt{double}.
   \end{itemizex}
 \end{frame}
 
 
 
+\begin{frame}[t,fragile]\frametitle{Jaké typy používat} 
+  \begin{itemize}
+    \item Nejjednodušší je omezit se na typy: \texttt{char} pro znaky, \texttt{int} pro celá čísla a \texttt{double} pro racionální čísla.
+    \item V \texttt{printf} pak \texttt{\%c} pro znaky, \texttt{\%d} (nebo \texttt{\%i}) pro celá čísla a \texttt{\%g} pro racionální čísla.
+    \item Ve \texttt{scanf} trochu jinak. 
+\begin{minted}[linenos=true]{c} 
+double double_cislo;
+float float_cislo;
+// nebude fungovat, scanf ocekava float
+scanf("%g", &double_cislo); 
+scanf("%lf", &double_cislo); // V poradku
+scanf("%g", &float_cislo)
+\end{minted}
+  \end{itemize}
+\end{frame}
+
+
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
