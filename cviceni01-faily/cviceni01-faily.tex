@@ -1,0 +1,96 @@
+\documentclass{beamer}
+\usetheme[pageofpages=z,
+          bullet=circle,
+          titleline=true,
+          alternativetitlepage=true,
+          titlepagelogo=uplogo,
+          ]{UVT}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{czech}
+\usepackage{minted}
+% \usepackage{url}
+
+
+\newenvironment{itemizex}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{8pt}%
+    \setlength{\parskip}{8pt}}%
+  {\end{itemize}}
+
+\newenvironment{enumeratex}%
+  {\large \begin{enumerate}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{enumerate}}
+
+
+\title{Úvod do programování 1 (KMI/ZP1 a KMI/UP1)}
+\subtitle{Poznámky ke cvičení 1}
+\author{Lukáš Havrlant}
+\date{19. září 2012}
+\institute{Univerzita Palackého}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{Visual Studio} 
+  \begin{itemizex}
+    \item Při vytváření projektu nezapomeňte na volbu \textbf{Empty Project}.
+    \item V jednom projektu může být jen jedna \texttt{main} funkce. 
+    \item Pro různé úlohy buď vytvářet nové projekty\dots
+    \item \dots nebo všechno cpát do jedné \texttt{main} funkce.
+    \item Nepoužívejte nikde diakritiku: \texttt{Ahoj světě!} $\longrightarrow$ \texttt{Ahoj svete!}
+  \end{itemizex}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Standardy jazyka C} 
+  \begin{itemizex}
+    \item Existuje několik standardů jazyka C. 
+    \item ANSI C, někdy také C89 a C90 z roku 1989, resp. 1990.
+    \item C99 z roku 1999.
+    \item C11 z roku 2011. 
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Významné novinky v C99} 
+  \begin{itemize}
+    \item Podpora pro jednořádkové komentáře: \texttt{// komentar}
+    \item \texttt{long long int}
+    \item Proměnné nemusí být deklarovány na začátku bloku.
+    \begin{minted}[linenos=true]{c} 
+int main() {
+    // VS zvladne tyto komentare
+    printf("Hello, World!\n");
+
+    /* Zvladne i typ long long, 
+    ale musi byt deklarovan jeste pred printf */
+    long long cislo = 10; 
+    return 0;
+}
+    \end{minted}
+    \item VS podporuje C89/C90 a umí některé věci z C99.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Short int} 
+  \begin{itemizex}
+    \item Typ \texttt{short} se používá pro čísla malého rozsahu.
+    \item Např. počet studentů v ročníku uložíme do \texttt{short}.
+    \item Rozsah \texttt{short}u: od -32768 do 32767.
+    \item Na uložení malých čísel jako $0.000023$ použijeme typ \texttt{double}!
+    \item Nejjednodušší je používat \texttt{char} pro znaky, \texttt{int} pro celá čísla a \texttt{double} pro racionální čísla.
+    \item V \texttt{printf} pak \texttt{\%c} pro znaky, \texttt{\%d} (nebo \texttt{\%i}) pro celá čísla a \texttt{\%g} pro racionální čísla.
+  \end{itemizex}
+\end{frame}
+
+
+
+\end{document}

@@ -1,0 +1,314 @@
+\documentclass{beamer}
+\usetheme[pageofpages=z,
+          bullet=circle,
+          titleline=true,
+          alternativetitlepage=true,
+          titlepagelogo=uplogo,
+          ]{UVT}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{czech}
+\usepackage{minted}
+% \usepackage{url}
+
+
+\newenvironment{itemizex}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{8pt}%
+    \setlength{\parskip}{8pt}}%
+  {\end{itemize}}
+
+\newenvironment{enumeratex}%
+  {\large \begin{enumerate}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{enumerate}}
+
+
+\title{Úvod do programování 1 (KMI/ZP1 a KMI/UP1)}
+\subtitle{Cvičení 1: Základy jazyka C}
+\author{Lukáš Havrlant}
+\date{19. září 2012}
+\institute{Univerzita Palackého}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Konzultace}
+\begin{itemizex}
+\item V pracovně 5.076.
+\item Každý čtvrtek 9.00 -- 11.00. 
+\item Emaily:
+  \begin{itemizex}
+    \item lukas.havrlant+skola@gmail.com
+    \item lukas.havrlant@upol.cz
+  \end{itemizex}
+\item Web: \url{http://tux.inf.upol.cz/~havrlant/}
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Doporučená literatura}
+\begin{itemize}
+\item Pavel Herout: Učebnice Jazyka C. Kopp, 2007.
+\item Kernighan, Ritchie: Programovací jazyk C, 2006.
+\item Reek Kenneth: Pointers on C. Addison Wesley, 1997.
+\item Robert Sedgewick: Algorithms in C. Addison-Wesley Professional, 2001.
+\item Jeri R. Hanly, Elliot B. Koffman: Problem Solving and Program Design in C. Addison Wesley, 2006.
+\item Eric S. Roberts: Programming Abstractions in C. Addison Wesley, 1997.
+\item Eric S. Roberts: The Art and Science of C. Addison Wesley, 1994.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t,fragile]{Podmínky získání zápočtu}
+\begin{itemizex}
+  \item Získání alespoň 10 bodů.
+  \begin{itemizex}
+    \item Za vypracování všech úloh, která budou zadána na cvičení, dostane student jeden bod. Tímto způsobem lze získat maximálně 5 bodů.
+    \item V zápočtovém týdnu bude na hodině zadána úloha, ze kterou bude možné získat 0--10 bodů. 
+  \end{itemizex}
+  \item Vypracování domácího úkolu. Zadání bude zveřejněno v druhé polovině semestru. 
+  \item Docházka není povinná.
+\end{itemizex}
+\end{frame}
+
+\begin{frame}[t,fragile]{Charakteristiky jazyka C}
+\begin{itemizex}
+    \item Nízkoúrovňový programovací jazyk
+    \item Platformově nezávislý
+    \item Kompilovaný (překládaný)
+    \item Minimalistický
+    \item Vychází z jazyku B
+  \end{itemizex}
+\end{frame}
+
+\begin{frame}[t,fragile]{Ukázka zdrojového souboru}
+\begin{minted}[linenos=true]{c} 
+#include <stdio.h>
+
+int main() {
+    /* Toto je komentar */
+    printf("Ahoj svete!\n");
+    return 0; 
+}
+\end{minted} 
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Vývojové prostředí}
+\begin{itemizex}
+  \item MS Visual Studio (MS Windows).
+  \item Code::Blocks (multiplatformní). [český manuál: \texttt{http://www.sallyx.org/sally/c/codeblocks/}]
+  \item GNU Emacs (GNU/Linux).
+  \item Xcode (OS X).
+  \item Sublime Text (multiplatformní).
+  \item Libovolný textový editor.
+\end{itemizex}
+\end{frame}
+
+\begin{frame}[t,fragile]{Překlad programu}
+\begin{itemizex}
+  \item Kompilátor \texttt{gcc}. Obvykle je nějaký kompilátor pod \texttt{cc}.
+  \item Překlad probíhá příkazem: \texttt{gcc -o program program.c}
+  \item V grafických prostředích kliknutím na příšlušné tlačítko (Build, Compile, případně Run, Debug).
+\end{itemizex}
+\end{frame}
+
+\begin{frame}[t,fragile]{Základní syntaxe}
+\begin{itemizex}
+  \item Rozlišuje velikost písmen (case-sensitive): 
+  \item \texttt{cislo} $\ne$ \texttt{Cislo} $\ne$ \texttt{CISLO}
+  \item Většinou ignoruje bílé znaky (odřádkování, tabulátor, mezera): 
+  \item \texttt{a=b+c} je stejné jako \texttt{a = b$\quad$ +c}
+  \item \texttt{"Ahoj svete!"} $\ne$ \texttt{"Ahoj$\quad$ svete!"}
+  \item \texttt{int cislo;} $\ne$ \texttt{intcislo;}
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Příkazy jsou ukončeny středníkem}
+\begin{itemizex}
+  \item Příklady:
+\begin{minted}[linenos=true]{c} 
+int cislo = 47;
+obvod = 2 * PI * r;
+printf("Ahoj svete!\n");
+printf("obvod=%i\n", 2 * PI * r);
+\end{minted} 
+  \item Před středník nedáváme mezeru. Proč ? 
+  \begin{minted}[linenos=true]{c} 
+int cislo = 47 ;
+obvod = 2 * PI * r     ;
+printf("Ahoj svete!\n")
+   ;
+  \end{minted}
+\end{itemizex}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]{Proměnná}
+\begin{itemize}
+  \item Musíme definovat jakého typu proměnná je:
+  \begin{minted}[linenos=true]{c} 
+  typ nazev_promenne = hodnota;
+  typ nazev_jine_promenne;
+  \end{minted}
+  \item Název se může skládat z písmen (a-zA-Z), číslic (0-9) a podtržítka (\_). Měl by začínat písmenem. Příklady:
+  \begin{minted}[linenos=true]{c} 
+  int vyska = 180;
+  float obvod_kruznice = 6.283;
+  float tan2PI;
+  int a, b = 10, c;
+  \end{minted}
+  \item \textbf{Název proměnné by měl být smysluplný!} Kód častěji čteme než píšeme, \texttt{2 * PI * r} je jasnější než \texttt{2 * wtf * asdf}.
+  % \item Z názvu proměnné by mělo být jasné, k čemu slouží.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Základní datové typy}
+\begin{itemizex}
+  \item \texttt{char}: jeden bajt, obvykle pro znaky. Typicky od 0 do 255.
+  \item \texttt{int}: celé číslo, obvykle má velikost přirozenou pro daný počítač (32/64 bitů). Např. od -2 147 483 648 do 2 147 483 647.
+  \item \texttt{float}: racionální číslo -- číslo s pohyblivou řádovou čárkou.
+  \item \texttt{double}: totéž jako \texttt{float}, akorát má dvojnásobnou přesnost.
+\end{itemizex}
+\end{frame}
+
+\begin{frame}[t,fragile]{Kvalifikátory základních typů -- short a long}
+\begin{itemizex}
+  \item Na celočíselný typ \texttt{int} lze aplikovat kvalifikátory \texttt{long} a \texttt{short}: 
+  \begin{minted}[linenos=true]{c} 
+  short int prumerna_mzda = 25000;
+  int poslanecky_plat = 56000;
+  long int majetek_billa_gatese = 1180000000000;
+
+  short prumerna_mzda = 25000;
+  long majetek_billa_gatese = 1180000000000;
+  \end{minted}
+  \item Kvalifikátor \texttt{long} lze aplikovat na \texttt{double}:
+  \begin{minted}[linenos=true]{c} 
+  long double = 0.05;
+  \end{minted}
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Kvalifikátory základních typů -- signed a unsigned}
+\begin{itemizex}
+  \item Na celočíselné typy (\texttt{int}, \texttt{char}) lze aplikovat kvalifikátory \texttt{signed} a \texttt{unsigned}.
+  \item \texttt{unsigned} -- čísla jsou vždy kladná nebo nulová.
+  \item \texttt{signed} -- čísla mohou být i záporná.
+  \item Rozsah \texttt{signed char} je od -128 do 127.
+  \item Rozsah \texttt{unsigned char} je od 0 do 255.
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Logické hodnoty}
+\begin{itemizex}
+  \item Logické hodnoty \uv{pravda} a \uv{nepravda} reprezentujeme čísly:
+  \item nula = nepravda.
+  \item nenulové číslo = pravda.
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Výstup na obrazovku}
+\begin{itemizex}
+  \item Pomocí funkce \texttt{printf}:
+  \begin{minted}[linenos=true]{c} 
+  printf(ridici_retezec, hodnota1, hodnota2, ...);
+
+  int a=10, b=27;
+  printf("Soucet 5+6: %i", 5+6); // Soucet 5+6: 11
+  printf("Soucet a+b: %i", a+b); // Soucet a+b: 37
+  printf("Soucet: %i, soucin: %i, rozdil: %i", 
+          a+b, a*b, a-b);
+  printf("Pili jsme 40%% vodku");
+  printf("Dek: %d, okt: %o, hexa: %x", b, b, b);
+  // Dek: 27, okt: 33, hexa: 1b
+  \end{minted}
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Znaky}
+\begin{itemize}
+  \item Datový typ \texttt{char} slouží k uložení jednoho znaku.
+  \item Znak zapisujeme pomocí apostrofu.
+  \item Interně reprezentováno jako číslo.
+  \item Který znak se má vytisknout se určí podle ASCII tabulky.
+  \item ASCII tabulka: \url{http://cs.wikipedia.org/wiki/ASCII}
+  \begin{minted}[linenos=true]{c} 
+  char znak = 'a';
+  printf("znak: %c, cislo: %i\n", znak, znak);
+  // znak: a, cislo: 97
+
+  char jinyznak = 98;
+  printf("znak: %c, cislo: %i\n", jinyznak, jinyznak);
+  // znak: b, cislo: 98
+  \end{minted}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t,fragile]{Konstanty}
+\begin{itemize}
+  \item Je číslo 42 typ \texttt{char}, \texttt{int}, \texttt{short} nebo \texttt{long}? \texttt{signed} nebo \texttt{unsigned}?
+  \item $\rightarrow$ \texttt{int} (a tedy \texttt{signed}). Velká čísla jsou \texttt{long}.
+  \item Desítkové: 14, 16U, 5145L, 58UL.
+  \item Osmičkové: 07, 0245, 0123.
+  \item Šestnáctkové: 0xABC, 0x0, 0x12B.
+  \begin{minted}[linenos=true]{c} 
+  int cislo = 0xA;
+  printf("cislo: %d\n", cislo);
+  // cislo: 10
+  \end{minted}
+  \item Racionální: 12.34, 15.47F, 57.478L, 1e+6, 3.14e-3.
+  \item Znakové: 'a', '9'. 
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Vstup z klávesnice}
+\begin{itemizex}
+  \item Pomocí funkce \texttt{scanf}:
+  \begin{minted}[linenos=true]{c} 
+  scanf(ridici_retezec, &promenna1, &promenna2, ...);
+
+  int cislo, hexa_cislo;
+  scanf("%i", &cislo);
+  scanf("%x", &hexa_cislo);
+  scanf("%d %d", &cislo1, &cislo2);
+  scanf("%d.%d.%d", &den, &mesic, &rok);
+  \end{minted}
+\end{itemizex}
+\end{frame}
+
+\begin{frame}[t,fragile]{Základní možnosti řídícího řetězce}
+\begin{itemize}
+  \item \texttt{\%c} -- výpis nebo načtení znaku.
+  \item \texttt{\%d} nebo \texttt{\%i} -- celé číslo desítkově znaménkově.
+  \item \texttt{\%u} -- celé číslo desítkově neznaménkově.
+  \item \texttt{\%o} -- celé číslo osmičkově.
+  \item \texttt{\%x} nebo \texttt{\%X} -- celé číslo šestnáctkově (malá/velká písmena).
+  \item \texttt{\%f} -- desetinné číslo.
+  \item \texttt{\%e} nebo \texttt{\%E} -- desetinné číslo semilogaritmicky.
+  \item \texttt{\%g} nebo \texttt{\%G} -- jako \texttt{\%f} nebo \texttt{\%e}, podle hodnoty čísla.
+  \item \texttt{\%s} -- textový řetězec.
+  \item \texttt{\%.3f} -- vypíše desetinné číslo s přesností na tři des. čísla.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Úlohy}
+Seznam úloh a návod na zprovoznění vývojového prostředí naleznete na \url{http://tux.inf.upol.cz/~havrlant/}
+\end{frame}
+
+
+\end{document}

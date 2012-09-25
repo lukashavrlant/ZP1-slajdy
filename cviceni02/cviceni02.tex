@@ -1,0 +1,280 @@
+\documentclass{beamer}
+\usetheme[pageofpages=z,
+          bullet=circle,
+          titleline=true,
+          alternativetitlepage=true,
+          titlepagelogo=uplogo,
+          ]{UVT}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{czech}
+\usepackage{minted}
+% \usepackage{url}
+
+
+\newenvironment{itemizex}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{8pt}%
+    \setlength{\parskip}{8pt}}%
+  {\end{itemize}}
+
+\newenvironment{enumeratex}%
+  {\large \begin{enumerate}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{enumerate}}
+
+
+\title{Úvod do programování 1 (KMI/ZP1 a KMI/UP1)}
+\subtitle{Cvičení 2: Operátory}
+\author{Lukáš Havrlant}
+\date{26. září 2012}
+\institute{Univerzita Palackého}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{Priorita operátorů}
+    \begin{itemizex}
+      \item Operátor je například \texttt{+}, \texttt{*}, \texttt{!}, \texttt{>}, \texttt{||}
+      \item Přehled všech operátorů je na \url{http://jazykc.inf.upol.cz/operatory/}
+      \item Priorita: jaký bude výsledek? $2+3\,\,/\,\,1+4=?$
+      \item Priorita udává pořadí, ve kterém se operace provádějí.
+      \item Pořadí lze změnit závorkami.
+      \item $(2+3/1)+4,\quad(2+3)/(1+4),\quad2+(3/1)+4.$
+    \end{itemizex}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Asociativita operátorů}
+    \begin{itemizex}
+      \item Asociativita udává směr vyhodnocování, buď zleva, nebo zprava. 
+      \item $36/6/2=?,\qquad 2^{3^2}=?$
+      \begin{minted}[linenos=true]{c} 
+int a = 1, b = 2, c = 3;
+a = b = c = 0;
+// a = (b = (c = 0))
+      \end{minted}
+      \item Asociativitu lze měnit závorkami: $36/(6/2)$.
+    \end{itemizex}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Arita operátorů} 
+  \begin{itemizex}
+    \item Arita udává, kolik operandů operátor potřebuje.
+    \item Unární (1), binární (2), ternární (3).
+    \item Unární: \texttt{-10}, \texttt{!ma\_zapocet}, \texttt{a++}
+    \item Binární: \texttt{10-5}, \texttt{a*2}, \texttt{ma\_zapocet \&\& ma\_zkousku}
+    \item Ternární: uvidíme dále.
+  \end{itemizex}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Aritmetické operátory 1} 
+  \begin{itemizex}
+    \item Plus, minus: jako unární i binární operátor, tj. \texttt{x=-5;} a \texttt{x=10-5}.
+    \item Dekrementace a inkrementace pomocí \texttt{--} a \texttt{++}.
+    \item \texttt{x++} je totéž jako \texttt{x = x + 1}
+    \begin{minted}[linenos=true]{c} 
+int i = 1, j, k;
+j = i++; // j = 1, i = 2
+k = ++i; // k = 3, i = 3
+
+i = 0;
+int x = 1 + i++ + 1; // x = 2, i = 1
+    \end{minted}
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Aritmetické operátory 2} 
+  \begin{itemize}
+    \item Násobení, dělení, modulo: \texttt{2*x}, \texttt{9/b}, \texttt{x\%2}.
+    \item \texttt{10 \% 3 = 1}, \texttt{13 \% 5 = 3} (zbytek po celočíselném dělení)
+    \item Výsledný typ závisí na typech operandů:
+    \item celé */\% celé = celé. Tj. \texttt{7 / 3 = 2}
+    \item celé */ racionální = racionální. Tj. \texttt{7 / 3.0 = 2.3333}
+    \item racionální */ celé = racionální. Tj. \texttt{7.0 / 3 = 2.3333}
+    \item racionální */ racionální = racionální. Tj. \texttt{7.0 / 3.0 = 2.3333}
+    \item Pokud chceme celé / celé = racionální, řešíme to přetypováním (viz dále).
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Logické operátory 1} 
+  \begin{itemizex}
+    \item Logický součin (\uv{a zároveň}): \texttt{\&\&}. V matematice: $\wedge$
+    \item Logický součet (\uv{nebo}): \texttt{||}. V matematice: $\vee$
+    \item Negace: \texttt{!}. V matematice: $\neg$
+    \begin{minted}[linenos=true]{c} 
+(ma_zapocet && ma_zkousku) || predmet_uznan;
+nema_zapocet = !ma_zapocet;
+    \end{minted}
+    \item $(ma\_zapocet\,\wedge\,ma\_zkousku)\vee predmet\_uznan$
+    \item $nema\_zapocet = \neg ma\_zapocet$
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Logické operátory 2} 
+  \begin{itemizex}
+    \begin{minted}[linenos=true]{c} 
+1 && 1 = 1        8 && 74 = 1
+0 && 1 = 0        0 && 74 = 0
+1 && 0 = 0        8 && 0  = 0
+0 && 0 = 0
+
+1 || 1 = 1        8 || 74 = 1
+0 || 1 = 1        0 || 74 = 1
+1 || 0 = 1        8 || 0  = 1
+0 || 0 = 0
+
+!0 = 1         
+!1 = 0            !8 = 0
+    \end{minted}
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Porovnání} 
+  \begin{itemizex}
+    \item Operátory pro porovnávání čísel:
+    \item \texttt{<}, \texttt{>}, \texttt{<=}, \texttt{>=} operátory opět vrací 0/1. 
+    \item Příklad: \texttt{3 > 2} (vrátí 1), \texttt{10 < 20} (vrátí 0)
+    \item \texttt{==}, \texttt{!=}
+    \item Pozor na rozdíl mezi \texttt{=} (přiřazení) a \texttt{==} (porovnání)!
+    \begin{minted}[linenos=true]{c} 
+int a = 1, b = 2, x;
+x = a == b;   // x = 0, a = 1, b = 2
+x = a = b;    // x = 2, a = 2, b = 1
+    \end{minted}
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Přiřazení} 
+  \begin{itemizex}
+    \item Přiřazujeme pomocí \texttt{=}, příklad: \texttt{a = 10;}. Je zprava asociativní.
+    \item Přiřazenou hodnotu můžeme dále použít:
+\begin{minted}[linenos=true]{c} 
+int a, b, c;
+a = b = c = 10;
+printf("%d", a = 5);
+\end{minted}
+  \item Odvozené operátory přiřazení: \texttt{+=}, \texttt{-=}, \texttt{*=}, \texttt{/=}, \texttt{\%=}
+  \item \texttt{x += 5} je totéž jako \texttt{x = x + 5}
+  \item \texttt{i++} je tak totéž jako \texttt{i += 1} a \texttt{i = i + 1}
+  \end{itemizex}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Příklady} 
+\begin{minted}[linenos=true]{c} 
+int a = 1, b = 2, c = 3, d = 4;
+int x = a*++b+c/d+++-++a%2+(c+=5);
+int y = a && b > c || !c < a && !a || !b >= a && d && b;
+int z = c < 5;
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Podmínkový operátor} 
+  \begin{itemize}
+    \item Jediný ternární operátor (někdy se mu tak i říká).
+    \item Syntaxe: \texttt{podminka ? vyraz\_splneno : vyraz\_nesplneno}
+    \item Pokud platí \texttt{podminka}, pak se operátor vyhodnotí na \texttt{vyraz\_splneno}, jinak na \texttt{vyraz\_nesplneno}.
+\begin{minted}[linenos=true]{c} 
+int a = 5, b = 10, x;
+x = a < b ? 7 : 14;      // x = 7
+x = a > b ? 7 : 14;      // x = 14
+x = a != b ? a : b;      // x = 5
+x = (a = 4 ? 7 : 14);    // x = ?
+\end{minted}
+    \item Není moc přehledný.
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Explicitní přetypování} 
+  \begin{itemize}
+    \item Převod výrazu z jednoho typu na jiný.
+    \item Syntaxe: \texttt{(novy\_typ)vyraz}
+    \begin{minted}[linenos=true]{c} 
+int cislo = 42, x = 10;
+double des_cislo = 3.14;
+
+int cela_cast = (int)des_cislo;       // 3
+cela_cast = (int)-3.14;               // -3
+float fdes_cislo = (float)des_cislo;  // 3.14F
+double des_int = (double)cislo;       // 42.0
+
+double odm = sqrt(9.0);               // 3.0
+odm = sqrt((double)9);                // 3.0
+int odm2 = (int)sqrt((double)9);      // 3
+double deleni = (double)cislo / x;    // 4.2
+    \end{minted}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Implicitní přetypování} 
+  \begin{itemize}
+    \begin{minted}[linenos=true]{c} 
+int a = 10;
+char b = 20;    
+    \end{minted}
+    \item Jakého typu bude výsledek \texttt{a+b}?
+    \item Před provedením každé operace:
+    \item \texttt{char} $\rightarrow$ \texttt{int}, \texttt{short} $\rightarrow$ \texttt{int}
+    \item \texttt{float} $\rightarrow$ \texttt{double}
+    \item Dále dokud se operandy nerovnají:
+    \item \texttt{int} $\rightarrow$ \texttt{unsigned int} $\rightarrow$ \texttt{long} $\rightarrow$ \texttt{unsigned long} $\rightarrow$ \texttt{double} $\rightarrow$ \texttt{long double}
+    \item V přiřazovacích příkladech se typ vpravo přetypuje tak, aby odpovídal typu vlevo.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Implicitní přetypování -- příklad} 
+\begin{minted}[linenos=true]{c} 
+short cele = 10;
+float des = 5.2F;
+printf("%g", cele + des);
+\end{minted}
+
+\begin{itemize}
+  \item Jako první se přetypuje \texttt{short} $\rightarrow$ \texttt{int} a \texttt{float} $\rightarrow$ \texttt{double}.
+  \item Operandy nemají stejný typ, takže se pokračuje dále.
+  \item \texttt{int} $\rightarrow$ \texttt{unsigned int} $\rightarrow$ \texttt{long} $\rightarrow$ \texttt{unsigned long} $\rightarrow$ \texttt{double}
+\end{itemize}
+
+\begin{minted}[linenos=true]{c} 
+short soucet = cele + des;
+\end{minted}
+
+\begin{itemize}
+  \item Přetypování probíhá stejně jako v předchozím případě.
+  \item V posledním kroku se výsledek \texttt{15.2} přetypuje na \texttt{short} a do \texttt{soucet} se uloží \texttt{15}.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Úlohy}
+\begin{center}
+\vskip 1cm
+{\Large Seznam úloh je na \url{http://KMIup1.jdem.cz}}
+\vskip 2cm
+\url{http://tux.inf.upol.cz/~havrlant/}
+\end{center}
+\end{frame}
+
+
+\end{document}
