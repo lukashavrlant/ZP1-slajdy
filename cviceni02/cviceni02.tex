@@ -147,13 +147,13 @@ nema_zapocet = !ma_zapocet;
   \begin{itemizex}
     \item Operátory pro porovnávání čísel:
     \item \texttt{<}, \texttt{>}, \texttt{<=}, \texttt{>=} operátory opět vrací 0/1. 
-    \item Příklad: \texttt{3 > 2} (vrátí 1), \texttt{10 < 20} (vrátí 0)
+    \item Příklad: \texttt{3 > 2} (vrátí 1), \texttt{10 > 20} (vrátí 0)
     \item \texttt{==}, \texttt{!=}
     \item Pozor na rozdíl mezi \texttt{=} (přiřazení) a \texttt{==} (porovnání)!
     \begin{minted}[linenos=true]{c} 
 int a = 1, b = 2, x;
 x = a == b;   // x = 0, a = 1, b = 2
-x = a = b;    // x = 2, a = 2, b = 1
+x = a = b;    // x = 2, a = 2, b = 2
     \end{minted}
   \end{itemizex}
 \end{frame}
