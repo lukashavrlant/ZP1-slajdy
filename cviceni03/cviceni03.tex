@@ -111,7 +111,7 @@ else
     int c = a + b;
     printf("Ahoj svete!");
 
-    if (c = 3)
+    if (c = 4)
         printf("Pravda.");
 }
     \end{minted}
@@ -130,6 +130,11 @@ if (cislo >= 0) {
   printf("Cislo je zaporne");
 }
   \end{minted}
+
+  \begin{itemizex}
+    \item Jaké je výchozí chování?
+    \item Lepší nevědět a používat závorky.
+  \end{itemizex}
 \end{frame}
 
 
@@ -271,16 +276,16 @@ switch(a) {
     \item Ale znaky jsou ve skutečnosti celá čísla, hurá!
   \end{itemize}
   \begin{minted}[linenos=true]{c} 
-char znak = 'c';
+char znak = '*';
 
 switch(znak) {
     case 'a': printf("Prvni znak abecedy\n"); break;
     case 'b': printf("Druhy znak abecedy\n"); break;
     case 'c': printf("Treti znak abecedy\n"); break;
-    case 'd': printf("Ctvrty znak abecedy\n"); break;
+    case '*': printf("To je hvezdicka!\n"); break;
     default: printf("Dal uz to neumim\n"); break;
 }
-// Treti znak abecedy
+// To je hvezdicka!
   \end{minted}
 \end{frame}
 
