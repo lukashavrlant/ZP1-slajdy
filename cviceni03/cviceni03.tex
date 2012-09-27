@@ -1,0 +1,311 @@
+\documentclass{beamer}
+\usetheme[pageofpages=z,
+          bullet=circle,
+          titleline=true,
+          alternativetitlepage=true,
+          titlepagelogo=uplogo,
+          ]{UVT}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{czech}
+\usepackage{minted}
+% \usepackage{url}
+
+
+\newenvironment{itemizex}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{8pt}%
+    \setlength{\parskip}{8pt}}%
+  {\end{itemize}}
+
+\newenvironment{enumeratex}%
+  {\large \begin{enumerate}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{enumerate}}
+
+
+\title{Úvod do programování 1 (KMI/ZP1 a KMI/UP1)}
+\subtitle{Cvičení 3: Větvení}
+\author{Lukáš Havrlant}
+\date{3. října 2012}
+\institute{Univerzita Palackého}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Konstrukce \texttt{if}} 
+  \begin{itemizex}
+    \item Pokud je splněna podmínka $X$, proveď $Y$, jinak proveď $Z$.
+    \item Obecná syntaxe: 
+    \begin{minted}[linenos=true]{c} 
+if (podminka)
+  vyraz_splneno;
+else 
+  vyraz_nespneno;
+    \end{minted}
+    \item Else větev je nepovinná.
+    \item Za \texttt{if}em a \texttt{else}m není středník.
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Jednoduchý příklad} 
+  \begin{minted}[linenos=true]{c} 
+int cislo = 5;
+if (cislo > 0)
+  printf("Cislo je kladne");
+
+
+int jine_cislo = -4;
+if (jine_cislo > 0)
+  printf("Cislo je kladne");
+else
+  printf("Cislo je zaporne");
+  \end{minted}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Složitější jednoduchý příklad} 
+  \begin{minted}[linenos=true]{c} 
+int cislo = -5;
+
+if (cislo >= 0)
+if (cislo == 0)
+printf("Cislo je rovno nule");
+else
+printf("Cislo je zaporne");
+  \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Složitější jednoduchý příklad přehledněji} 
+\begin{minted}[linenos=true]{c} 
+if (cislo >= 0)
+    if (cislo == 0)
+        printf("Cislo je rovno nule");
+    else
+        printf("Cislo je kladne");
+
+if (cislo >= 0)
+    if (cislo == 0)
+        printf("Cislo je rovno nule");
+else
+    printf("Cislo je kladne");
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Bloky} 
+  \begin{itemizex}
+    \item Blok umožňuje zapsat více příkazů na místě jednoho
+    \begin{minted}[linenos=true]{c} 
+{
+    int a = 1, b = 2;
+    int c = a + b;
+    printf("Ahoj svete!");
+
+    if (c = 3)
+        printf("Pravda.");
+}
+    \end{minted}
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Jednoduchý příklad s bloky} 
+  \begin{minted}[linenos=true]{c} 
+if (cislo >= 0) {
+    if (cislo == 0)
+        printf("Cislo je rovno nule");
+    else 
+        printf("Cislo je kladne");
+} else {
+  printf("Cislo je zaporne");
+}
+  \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Složitější příklad s bloky} 
+  \begin{minted}[linenos=true]{c} 
+int a = 1, b = 2;
+int min, max;
+
+if (a > b) {
+    printf("Promenna a je vetsi nez b");
+    min = b;
+    max = a;
+} else  {
+    printf("Promenna a neni vetsi nez b");
+    min = a;
+    max = b;
+}
+  \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Složitější příklad bez bloků} 
+  \begin{minted}[linenos=true]{c} 
+int a = 1, b = 2;
+int min, max;
+
+if (a > b) 
+    printf("Promenna a je vetsi nez b");
+    min = b;
+    max = a;
+  \end{minted}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Líné vyhodnocování} 
+  \begin{itemizex}
+    \item Logické výrazy se nemusí vyhodnotit celé.
+    \item Pokud je výsledek jasný, vyhodnocování nepokračuje.
+  \end{itemizex}
+  \begin{minted}[linenos=true]{c} 
+int cislo = 0;
+
+if (3 < 4 && (cislo = 5)) 
+    printf("Cislo: %d", cislo); // Cislo: 5
+
+if (3 < 4 || (cislo = 10))
+    printf("Cislo: %d", cislo); // Cislo: 5
+
+  \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Odpudivý příklad} 
+  \begin{itemizex}
+    \item Úkol: načtěte číslici a vypište na obrazovku její slovní název.
+    \item $1\longrightarrow$ jedna, $2\longrightarrow$ dva, atd.
+  \end{itemizex}
+
+  \begin{minted}[linenos=true]{c} 
+int cislo = 2;
+if (cislo == 1)
+    printf("jedna");
+if (cislo == 2)
+    printf("dva");
+if (cislo == 3)
+    printf("tri");
+if (cislo == 4)
+    printf("ctyri");
+...
+  \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Konstrukce \texttt{switch}} 
+  \begin{itemizex}
+    \item Funguje podobně jako hromada \texttt{if}ů za sebou.
+    \item Proměnná \texttt{cislo} v příkladu musí být celé číslo.
+  \end{itemizex}
+  \begin{minted}[linenos=true]{c} 
+int cislo = 2;
+switch(cislo) {
+    case 0: printf("nula"); break;
+    case 1: printf("jedna"); break;
+    case 2: printf("dva"); break;
+    ...
+    case 9: printf("devet"); break;
+    default: printf("nevim"); break;
+}
+// dva
+  \end{minted}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Switch bez breaku} 
+\begin{itemizex}
+  \item Bez příkazu \texttt{break} pokračuje výpočet v další větvi.
+\end{itemizex}
+\begin{minted}[linenos=true]{c} 
+int a = 0;
+switch(a) {
+    case 0: printf("nula ");
+    case 1: printf("jedna ");
+    case 2: printf("dva "); break;
+    ...
+    case 9: printf("devet "); break;
+    default: printf("nevim ");
+}
+
+// nula jedna dva 
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Switch s více příkazy} 
+  \begin{minted}[linenos=true]{c} 
+switch(a) {
+    case 0: {
+        printf("nula");
+        cislo = 2 * a;
+        printf("%d\n", cislo);
+    }
+    case 1: 
+        printf("jedna ");
+        cislo = 4 * a;
+        printf("%d\n", cislo);
+        break;
+    case 2: printf("dva "); break;
+    default: printf("nevim ");
+}
+  \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Switch se znaky} 
+  \begin{itemize}
+    \item \texttt{Switch} můžeme používat jen pro celá čísla.
+    \item Ale znaky jsou ve skutečnosti celá čísla, hurá!
+  \end{itemize}
+  \begin{minted}[linenos=true]{c} 
+char znak = 'c';
+
+switch(znak) {
+    case 'a': printf("Prvni znak abecedy\n"); break;
+    case 'b': printf("Druhy znak abecedy\n"); break;
+    case 'c': printf("Treti znak abecedy\n"); break;
+    case 'd': printf("Ctvrty znak abecedy\n"); break;
+    default: printf("Dal uz to neumim\n"); break;
+}
+// Treti znak abecedy
+  \end{minted}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Znaky se opravdu chovají jako čísla} 
+  \begin{minted}[linenos=true]{c} 
+int x;
+printf("%d", 'a'); // 97
+printf("%d", 'z'); // 122
+x = 'a' < 100; // x = 1
+x = 'a' < 'z'; // x = 1
+x = 'a' < ('z' / 2); // x = 0
+  \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Úlohy}
+\begin{center}
+\vskip 1cm
+{\Large Seznam úloh je na \url{http://KMIup1.jdem.cz}}
+\vskip 2cm
+\url{http://tux.inf.upol.cz/~havrlant/}
+\end{center}
+\end{frame}
+
+
+\end{document}
