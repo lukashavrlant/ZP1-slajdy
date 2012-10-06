@@ -26,7 +26,7 @@
 
 
 \title{Úvod do programování 1 (KMI/ZP1 a KMI/UP1)}
-\subtitle{Cvičení 3: Větvení}
+\subtitle{Cvičení 3: Větvení programu}
 \author{Lukáš Havrlant}
 \date{3. října 2012}
 \institute{Univerzita Palackého}
@@ -66,39 +66,24 @@ int jine_cislo = -4;
 if (jine_cislo > 0)
   printf("Cislo je kladne");
 else
-  printf("Cislo je zaporne");
+  printf("Cislo neni kladne");
   \end{minted}
 \end{frame}
 
 
 
-\begin{frame}[t,fragile]\frametitle{Složitější jednoduchý příklad} 
+\begin{frame}[t,fragile]\frametitle{Složitější příklad} 
   \begin{minted}[linenos=true]{c} 
-int cislo = -5;
+int a = 1, b = 2;
+int max;
 
-if (cislo >= 0)
-if (cislo == 0)
-printf("Cislo je rovno nule");
+if (a > b) 
+    printf("Promenna a je vetsi nez b");
+    max = a;
 else
-printf("Cislo je zaporne");
+    printf("Promenna a neni vetsi nez b");
+    max = b;
   \end{minted}
-\end{frame}
-
-
-\begin{frame}[t,fragile]\frametitle{Složitější jednoduchý příklad přehledněji} 
-\begin{minted}[linenos=true]{c} 
-if (cislo >= 0)
-    if (cislo == 0)
-        printf("Cislo je rovno nule");
-    else
-        printf("Cislo je kladne");
-
-if (cislo >= 0)
-    if (cislo == 0)
-        printf("Cislo je rovno nule");
-else
-    printf("Cislo je kladne");
-\end{minted}
 \end{frame}
 
 
@@ -119,7 +104,57 @@ else
 \end{frame}
 
 
-\begin{frame}[t,fragile]\frametitle{Jednoduchý příklad s bloky} 
+\begin{frame}[t,fragile]\frametitle{Složitější příklad, tentokrát správně} 
+  \begin{minted}[linenos=true]{c} 
+int a = 1, b = 2;
+int max;
+
+if (a > b) {
+    printf("Promenna a je vetsi nez b");
+    max = a;
+} else {
+    printf("Promenna a neni vetsi nez b");
+    max = b;
+}
+  \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Vnořené podmínky} 
+  \begin{minted}[linenos=true]{c} 
+int cislo = -5;
+
+if (cislo >= 0)
+if (cislo == 0)
+printf("Cislo je rovno nule");
+else
+printf("Cislo je ???");
+  \end{minted}
+
+  \begin{itemizex}
+    \item Problém -- ke kterému \texttt{if}u patří \texttt{else} větev?
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Vnořené podmínky přehledněji} 
+\begin{minted}[linenos=true]{c} 
+if (cislo >= 0)
+    if (cislo == 0)
+        printf("Cislo je rovno nule");
+    else
+        printf("Cislo je kladne");
+
+if (cislo >= 0)
+    if (cislo == 0)
+        printf("Cislo je rovno nule");
+else
+    printf("Cislo je zaporne");
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Vnořené podmínky s bloky} 
   \begin{minted}[linenos=true]{c} 
 if (cislo >= 0) {
     if (cislo == 0)
@@ -138,37 +173,6 @@ if (cislo >= 0) {
 \end{frame}
 
 
-\begin{frame}[t,fragile]\frametitle{Složitější příklad s bloky} 
-  \begin{minted}[linenos=true]{c} 
-int a = 1, b = 2;
-int min, max;
-
-if (a > b) {
-    printf("Promenna a je vetsi nez b");
-    min = b;
-    max = a;
-} else  {
-    printf("Promenna a neni vetsi nez b");
-    min = a;
-    max = b;
-}
-  \end{minted}
-\end{frame}
-
-
-\begin{frame}[t,fragile]\frametitle{Složitější příklad bez bloků} 
-  \begin{minted}[linenos=true]{c} 
-int a = 1, b = 2;
-int min, max;
-
-if (a > b) 
-    printf("Promenna a je vetsi nez b");
-    min = b;
-    max = a;
-  \end{minted}
-\end{frame}
-
-
 
 \begin{frame}[t,fragile]\frametitle{Líné vyhodnocování} 
   \begin{itemizex}
@@ -184,6 +188,8 @@ if (3 < 4 && (cislo = 5))
 if (3 < 4 || (cislo = 10))
     printf("Cislo: %d", cislo); // Cislo: 5
 
+// deleni nulou uz se neprovede
+int vysledek = (3 < 5) || (1 / (cislo - 5));
   \end{minted}
 \end{frame}
 
