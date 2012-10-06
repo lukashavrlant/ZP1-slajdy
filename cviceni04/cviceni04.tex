@@ -1,0 +1,341 @@
+\documentclass{beamer}
+\usetheme[pageofpages=z,
+          bullet=circle,
+          titleline=true,
+          alternativetitlepage=true,
+          titlepagelogo=uplogo,
+          ]{UVT}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{czech}
+\usepackage{minted}
+% \usepackage{url}
+
+
+\newenvironment{itemizex}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{8pt}%
+    \setlength{\parskip}{8pt}}%
+  {\end{itemize}}
+
+\newenvironment{enumeratex}%
+  {\large \begin{enumerate}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{enumerate}}
+
+
+\title{Základy programování 1 (KMI/ZP1 a KMI/UP1)}
+\subtitle{Cvičení 4: Cykly}
+\author{Lukáš Havrlant}
+\date{10. října 2012}
+\institute{Univerzita Palackého}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Motivace} 
+  \begin{itemizex}
+    \item Úkol: vypište na obrazovku prvních 5 přirozených čísel. 
+    \begin{minted}[linenos=true]{c} 
+int main() {
+    printf("1\n");
+    printf("2\n");
+    printf("3\n");
+    printf("4\n");
+    printf("5\n");
+}
+    \end{minted}
+    \item Fuj!
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Lepší motivace} 
+  \begin{itemizex}
+    \item Úkol: vypište na obrazovku prvních $n$ přirozených čísel.
+    \begin{minted}[linenos=true]{c} 
+int main() {
+    int n = 3;
+    if (n >= 1) printf("1\n");
+    if (n >= 2) printf("2\n");
+    if (n >= 3) printf("3\n");
+    if (n >= 4) printf("4\n");
+    if (n >= 5) printf("5\n");
+    if (n >= 6) printf("6\n");
+    ...
+}
+    \end{minted}
+    \item Fuj!
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Cyklus while} 
+  \begin{itemizex}
+    \item Slouží k opakování části kódu, dokud je splněná nějaká podmínka
+    \begin{minted}[linenos=true]{c} 
+int i = 1;
+
+while(i <= 3) {
+    printf("%d\n", i);
+    i++;
+}
+    \end{minted}
+  \end{itemizex}
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{Jak bude probíhat výpočet} 
+  \begin{minted}[linenos=true]{c} 
+int i = 1;             
+if (1 <= 3) {                 if (4 <= 3) {
+    printf("%d\n", 1);            printf("%d\n", 4);
+    i++; // i = 2                 i++;
+}                             }
+if (2 <= 3) {
+    printf("%d\n", 2);
+    i++; // i = 3
+}
+if (3 <= 3) {
+    printf("%d\n", 2);
+    i++; // i = 4
+}
+  \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Příklad} 
+  \begin{itemize}
+    \item Příklad:
+    \begin{minted}[linenos=true]{c} 
+int i = 10;
+while(i) {
+  printf("%i ", i);
+  i--;
+}
+// 10 9 8 7 6 5 4 3 2 1 
+    \end{minted}
+  \item Totéž jako:
+  \begin{minted}[linenos=true]{c} 
+int i = 10;
+while(i != 0) {
+  printf("%i ", i);
+  i--;
+}
+    \end{minted}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Zacyklení} 
+  \begin{itemizex}
+    \item Pokud zapíšete blbě podmínku, můžete získat nekonečný cyklus:
+    \begin{minted}[linenos=true]{c} 
+int i = 0, n = 10;
+while (i < n) {
+    printf("%i\n", i);
+}
+    \end{minted}
+    \item Nejspíš jsme zapomněli na \texttt{i++}
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Cyklus nemusí proběhnout ani jednou} 
+  \begin{itemizex}
+    \item Pokud není ani poprvé splněna podmínka, příkazy v těle cyklu \texttt{while} se neprovedou!
+    \begin{minted}[linenos=true]{c} 
+int i = 10, n = 10;
+
+printf("Jsem pred cyklem. ");
+while (i < n) {
+    printf("Jsem v cyklu. ");
+    i++;
+}
+printf("Jsem za cyklem.");
+// Jsem pred cyklem. Jsem za cyklem.
+    \end{minted}
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Cyklus \texttt{do-while}} 
+  \begin{itemizex}
+    \item Podobný cyklu \texttt{while}, ale příkazy v těle cyklu se vždy provedouz alespoň jednou.
+    \begin{minted}[linenos=true]{c} 
+int i = 10, n = 10;
+
+printf("Jsem pred cyklem. ");
+do {
+    printf("Jsem v cyklu. ");
+    i++;
+} while (i < n);
+printf("Jsem za cyklem.");
+// Jsem pred cyklem. Jsem v cyklu. Jsem za cyklem.
+    \end{minted}
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Cyklus for} 
+  \begin{itemizex}
+    \item Klasické schéma pro \texttt{while}:
+    \begin{minted}[linenos=true]{c} 
+int i = 0;
+while (i < 10) {
+    // udelej neco...
+    i++;
+}
+    \end{minted}
+    \item Lze přehledněji napsat cyklem \texttt{for}:
+    \begin{minted}[linenos=true]{c} 
+int i;
+for (i = 0; i < 10; i++) {
+    // udelej neco...
+}
+    \end{minted}
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Syntaxe cyklu \texttt{for}} 
+  \begin{itemizex}
+    \item Obecná syntaxe cyklu \texttt{for}:
+    \begin{minted}[linenos=true]{c} 
+for (inicialize; podminka; iterace)
+    prikaz
+    \end{minted}
+    \item \texttt{inicializace}: zde inicializujeme proměnné, více proměnných oddělujeme čárkou, např: \texttt{i = 10, j = 5}
+    \item \texttt{podminka}: ukončovací podmínka cyklu, např. \texttt{i < 10}
+    \item \texttt{iterace}: příkazy, které se provedou na konci cyklu, typicky změna proměnné, přes kterou iterujeme. Více příkazů opět oddělujeme čárou, např. \texttt{i++, j--}
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Cyklus \texttt{for} lze zapsat jako cyklus \texttt{while}} 
+\begin{minted}[linenos=true]{c} 
+for (inicialize; podminka; iterace)
+    prikaz
+
+inicialize;
+while(podminka) {
+    prikaz;
+    iterace;
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Příklady na \texttt{for}}
+  \begin{itemizex}
+    \item Vypiš prvních $n$ přirozených čísel
+\begin{minted}[linenos=true]{c} 
+int i, n = 5;
+for (i = 1; i <= n; i++) {
+    printf("%i\n", i);
+}
+\end{minted}
+  \item Vypiš prvních $n$ sudých čísel.
+\begin{minted}[linenos=true]{c} 
+int i, n = 5;
+for (i = 2; i <= n * 2; i += 2) {
+    printf("%i\n", i);
+}
+\end{minted}
+  \end{itemizex}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Další příklad na \texttt{for}} 
+\begin{itemizex}
+  \item Vypiš prvních $n$ přirozených čísel a u každého zobraz, zda je číslo liché nebo sudé.
+\begin{minted}[linenos=true]{c} 
+int i, n = 5;
+for (i = 1; i <= n; i++) {
+    if (i % 2 == 0)
+        printf("%i je sude cislo\n", i);
+    else
+        printf("%i je liche cislo\n", i);
+}
+\end{minted}
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Cykly můžeme vnořovat} 
+\begin{minted}[linenos=true]{c} 
+int i, j, n = 3;
+for (i = 1; i <= n; i++) {
+    for (j = 1; j <= n; j++) {
+        printf("i=%i, j=%i | ", i, j);
+    }
+    printf("\n");
+}
+// i=1, j=1 | i=1, j=2 | i=1, j=3 | 
+// i=2, j=1 | i=2, j=2 | i=2, j=3 | 
+// i=3, j=1 | i=3, j=2 | i=3, j=3 |
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Příkazy k ovládanání běhu cyklu} 
+  \begin{itemizex}
+    \item Pomocí dvou příkazů můžeme ovlivnit běh cyklu.
+    \item Příkaz \texttt{break} okmažitě ukončuje cyklus.
+    \item Příkaz \texttt{continue} okamžitě přechází na další iteraci.
+  \end{itemizex}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Příklad na příkaz \texttt{break}} 
+\begin{itemizex}
+  \item Vypiš všechny druhé mocniny (přirozených čísel), které jsou menší než $max$ 
+\end{itemizex}
+\begin{minted}[linenos=true]{c} 
+int i, mocnina, max = 100;
+
+for (i = 1; ; i++) {
+    mocnina = i * i;
+    if (mocnina < max) 
+        printf("%i ", mocnina);
+    else
+        break;
+}
+// 1 4 9 16 25 36 49 64 81
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Příklad na \texttt{continue}} 
+\begin{itemizex}
+  \item Vypiš všechna sudá čísla, která jsou menší než $n$ a která nejsou dělitelná šesti
+\begin{minted}[linenos=true]{c} 
+int i, n = 20;
+
+for (i = 0; i < n; i += 2) {
+    if (i % 6 == 0)
+        continue;
+    printf("%i ", i);
+}
+// 2 4 8 10 14 16 
+\end{minted}
+\end{itemizex}
+\end{frame}
+
+\begin{frame}[t,fragile]{Úlohy}
+\begin{center}
+\vskip 1cm
+{\Large Seznam úloh je na \url{http://KMIup1.jdem.cz}}
+\vskip 2cm
+\url{http://tux.inf.upol.cz/~havrlant/}
+\end{center}
+\end{frame}
+
+
+\end{document}
