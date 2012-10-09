@@ -344,6 +344,44 @@ for (i = 0; i < n; i += 2) {
 \end{itemizex}
 \end{frame}
 
+
+\begin{frame}[t,fragile]\frametitle{Primitivní funkce} 
+  \begin{itemizex}
+    \item Funkce = část programu, kterou je možné opakovaně volat z různých míst kódu.
+    \item Používají se i pro zpřehlednění kódu.
+    \begin{minted}[linenos=true]{c} 
+#include <stdio.h>
+void nazev_funkce() {
+    prikazy
+}
+int main() {
+    nazev_funkce();
+}
+    \end{minted}
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Příklad} 
+\begin{minted}[linenos=true]{c} 
+#include <stdio.h>
+void pozdrav_svet() {
+  printf("Ahoj svete!\n");
+}
+void maximum() {
+  int a = 5, b = 6;
+  int max = a > b ? a : b;
+  printf("Maximum: %d\n", max);
+}
+int main() {
+  int a = 10;
+  pozdrav_svet();     // Vypise: Ahoj svete!
+  maximum();          // Vypise: Maximum: 6
+  pozdrav_svet();     // Vypise: Ahoj svete!
+}
+\end{minted}
+\end{frame}
+
 \begin{frame}[t,fragile]{Úlohy}
 \begin{center}
 \vskip 1cm
