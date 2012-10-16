@@ -247,16 +247,16 @@ while (str[++i]);
 
 \begin{frame}[t,fragile]\frametitle{Tady začíná peklo} 
     \begin{itemizex}
-        \item Pole je uloženo v paměti jako souvislý blok. 
         \begin{minted}[linenos=true]{c} 
 int suda[5] = {2, 4, 6, 8, 10};
 int licha[5] = {1, 3, 5, 7, 9};
 suda[5] = 42;
         \end{minted}
         \item Pole \texttt{suda} nemá pátý index $\longrightarrow$ co se stane?
-        \item \uv{Někam} do paměti se uloží číslo 42.
+        \item Lepší možnost: program spadne (Segmentation fault), protože přistupuje do paměti, kterou nevlastní. 
+        \item Horší možnost: \uv{Někam} do paměti se uloží číslo 42.
         \item !!!\underline{\textbf{NĚKAM}}!!! se uloží $\longrightarrow$ ZLO!!!
-        \item (Přesněji -- my víme kam, akorát nevíme, co tam je.)
+        % \item (Přesněji -- my víme kam, akorát nevíme, co tam je.)
     \end{itemizex}
 \end{frame}
 
