@@ -1,0 +1,238 @@
+\documentclass{beamer}
+\usetheme[pageofpages=z,
+          bullet=circle,
+          titleline=true,
+          alternativetitlepage=true,
+          titlepagelogo=uplogo,
+          ]{UVT}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{czech}
+\usepackage{minted}
+% \usepackage{url}
+
+
+\newenvironment{itemizex}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{8pt}%
+    \setlength{\parskip}{8pt}}%
+  {\end{itemize}}
+
+\newenvironment{enumeratex}%
+  {\large \begin{enumerate}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{enumerate}}
+
+
+\title{Základy programování 1 (KMI/ZP1 a KMI/UP1)}
+\subtitle{Cvičení 5: Jednorozměrná pole}
+\author{Lukáš Havrlant}
+\date{17. října 2012}
+\institute{Univerzita Palackého}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Co je to pole} 
+  \begin{itemizex}
+    \item Pole je datová struktura, která sdružuje daný konečný počet prvků (čísel) stejného datového typu.
+    \item Jak bychom v Céčku uložili pět čísel? 
+    \item Pět proměnných $\longrightarrow$ fuj!
+    \item Použijeme pole: 
+\begin{minted}[linenos=true]{c} 
+int cisla[5] = {1, 3, 6, -5032, 42};
+\end{minted}
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Definice pole} 
+  \begin{itemizex}
+    \item Obecná definice:
+    \begin{minted}[linenos=true]{c} 
+typ nazev[pocet_prvku];
+    \end{minted}
+    \item Příklad:
+    \begin{minted}[linenos=true]{c} 
+int prvocisla[7];
+double odmocniny[10];
+
+int suda_cisla[5] = {2, 4, 6, 8, 10};
+int licha_cisla[] = {1, 3, 5};
+double dane = {16.5, 18, 21.75};
+    \end{minted}
+  \end{itemizex}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Přístup k prvkům pole} 
+  \begin{itemize}
+    \item Pomocí operátoru \texttt{[]}
+    \item Pokud chceme získat/nastavit 4. prvek pole, použijeme kód:
+    \begin{minted}[linenos=true]{c} 
+int pole[] = {1, 2, 3, 4, 5, 6, 7};
+int ctvrty_prvek = pole[4];
+pole[2] = 0;
+    \end{minted}
+    \item Zrada: pole je číslováno od nuly, ne od jedničky!
+    \begin{minted}[linenos=true]{c} 
+printf("%d", pole[4]); // Vypise 5!
+printf("%d", pole[0]); // Vypise 1!
+printf("%d", pole[7]); // 7. prvek pole neexistuje
+pole[2] = 0;
+// Pole ma tvar:
+// {1, 2, 0, 4, 5, 6, 7}
+    \end{minted}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Inicializace prvků pole} 
+  \begin{itemizex}
+    \item Prvky pole nejsou inicializovány na žádnou výchozí hodnotu.
+    \item Kód \texttt{int pole[5];} jen vytvoří v paměti místo pro pět integerů.
+    \begin{minted}[linenos=true]{c} 
+int cisla[5], i;
+for (i = 0; i < 5; i++) 
+    printf("%i", cisla[i]);
+// Vypise napr. 0 0 1506385072 32767 1706455134
+    \end{minted}
+    \item Inicializujeme ručně:
+    \begin{minted}[linenos=true]{c} 
+for (i = 0; i < 5; i++) 
+    cisla[i] = 0;
+    \end{minted}
+  \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Jak zjistíme délku pole?} 
+    \begin{itemizex}
+        \item Nijak.
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Jak si pamatovat délku pole?} 
+    \begin{itemizex}
+        \item Bohužel nelze použít proměnnou
+        \begin{minted}[linenos=true]{c} 
+int delka = 42;
+int pole[delka]; // Toto nefunguje!
+        \end{minted}
+        \item Použijte preprocesorovou direktivu \texttt{define}
+        \item Konstantu pište velkými písmeny.
+        \begin{minted}[linenos=true]{c} 
+#define DELKA 10
+int pole[DELKA], i;
+for (i = 0; i < DELKA; i++) 
+    pole[i] = i * i;
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Textové řetězce} 
+    \begin{itemize}
+        \item V Céčku se textové řetězce, např. "Ahoj Svete!", realizují jako pole charů.
+        \item Konec řetězce označuje znak '\textbackslash0', nula.
+        \item Řetězec "ahoj" je rovný poli \texttt{\{'a', 'h', 'o', 'j', '\textbackslash0'\}}
+        \begin{minted}[linenos=true]{c} 
+char str[] = "ahoj";
+int i;
+
+for (i = 0; i <= 4; i++) 
+    printf("%i ", str[i]);
+// 97 104 111 106 0
+        \end{minted}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Nulová zarážka v podmínce} 
+    \begin{itemizex}
+        \item Nulová zarážka má číselnou hodnotu 0
+        \item Lze tak použít v podmínce cyklu pro zjištění konce řetězce:
+        \begin{minted}[linenos=true]{c} 
+char str[] = "ahoj";
+char znak;
+int i = 0;
+
+while (znak = str[i]) {
+    printf("%c ", znak);
+    i++;
+}
+// a h o j 
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Jak vypsat řetězec v printf} 
+    \begin{itemizex}
+        \item Funkce \texttt{printf} umí s řetězci pracovat.
+        \item Stačí použít modifikátor \texttt{\%s}:
+        \begin{minted}[linenos=true]{c} 
+char str[] = "ahoj";
+printf("%s", str);
+// ahoj
+        \end{minted}
+        \item Je to stejné jako
+        \begin{minted}[linenos=true]{c} 
+while (znak = str[i]) {
+    printf("%c", znak);
+    i++;
+}
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Nulová zarážka fakt ukončuje řetězec} 
+    \begin{minted}[linenos=true]{c} 
+char pozdrav[] = "Dobry vecer!";
+printf("'%s'\n", pozdrav); // 'Dobry vecer!'
+pozdrav[5] = '\0';
+printf("'%s'\n", pozdrav); // 'Dobry'
+    \end{minted}
+    \begin{itemizex}
+        \item Řetězec má nyní tvar:
+        \item \texttt{'D', 'o', 'b', 'r', 'y', '\textbackslash0', 'v', 'e', 'c', 'e', 'r', '\textbackslash0'}
+    \end{itemizex}
+    \begin{minted}[linenos=true]{c} 
+printf("'%c'", pozdrav[10]); // Vypise: 'r'
+    \end{minted}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Jeden hodně stručný while} 
+    \begin{itemizex}
+        \item Je k něčemu dobrý tento \texttt{while}?
+        \begin{minted}[linenos=true]{c} 
+char str[] = "slovo";
+int i = -1;
+while (str[++i]);
+    \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Úlohy}
+\begin{center}
+\vskip 1cm
+{\Large Seznam úloh je na \url{http://KMIup1.jdem.cz}}
+\vskip 2cm
+\url{http://tux.inf.upol.cz/~havrlant/}
+\end{center}
+\end{frame}
+
+
+\end{document}
