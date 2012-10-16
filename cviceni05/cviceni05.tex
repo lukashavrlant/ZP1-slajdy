@@ -204,13 +204,32 @@ printf("'%s'\n", pozdrav); // 'Dobry'
     \end{minted}
     \begin{itemizex}
         \item Řetězec má nyní tvar:
-        \item \texttt{'D', 'o', 'b', 'r', 'y', '\textbackslash0', 'v', 'e', 'c', 'e', 'r', '\textbackslash0'}
+        \item \texttt{\{'D', 'o', 'b', 'r', 'y', '\textbackslash0', 'v', 'e', 'c', 'e', 'r', '\textbackslash0'\}}
     \end{itemizex}
     \begin{minted}[linenos=true]{c} 
 printf("'%c'", pozdrav[10]); // Vypise: 'r'
+pozdrav[5] = '_';
+printf("'%s'\n", pozdrav); // 'Dobry_vecer!'
     \end{minted}
 \end{frame}
 
+
+\begin{frame}[t,fragile]\frametitle{Řetězec bez nulové zarážky} 
+    \begin{itemizex}
+        \item Pokud zrušíme nulovou zařážku, bude to vypisovat nesmysly.
+        \begin{minted}[linenos=true]{c} 
+char pozdrav[] = "Dobry vecer!";
+pozdrav[12] = '+';
+printf("'%s'\n", pozdrav); // 'Dobry vecer!+??Q?'
+        \end{minted}
+        \item Pokud u pole charů specifikujete velikost, musí být pole o jedna větší než řetězec.
+        \begin{minted}[linenos=true]{c} 
+// V poli bude chybet nulova zarazka
+char spatny_pozdrav[4] = "ahoj"; 
+char spravny_pozdrav[5] = "ahoj";
+        \end{minted}
+    \end{itemizex}
+\end{frame}
 
 
 \begin{frame}[t,fragile]\frametitle{Jeden hodně stručný while} 
