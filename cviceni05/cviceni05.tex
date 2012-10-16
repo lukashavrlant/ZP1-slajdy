@@ -120,21 +120,22 @@ for (i = 0; i < 5; i++)
 
 
 \begin{frame}[t,fragile]\frametitle{Jak si pamatovat délku pole?} 
-    \begin{itemizex}
-        \item Bohužel nelze použít proměnnou
+    \begin{itemize}
+        \item Bohužel v C89 (Visual Studio) nelze použít proměnnou
         \begin{minted}[linenos=true]{c} 
 int delka = 42;
-int pole[delka]; // Toto nefunguje!
+int pole[delka]; // Toto v C89 nefunguje!
         \end{minted}
         \item Použijte preprocesorovou direktivu \texttt{define}
         \item Konstantu pište velkými písmeny.
+        \item Nebo použijte kompiátor podporující C99.
         \begin{minted}[linenos=true]{c} 
 #define DELKA 10
 int pole[DELKA], i;
 for (i = 0; i < DELKA; i++) 
     pole[i] = i * i;
         \end{minted}
-    \end{itemizex}
+    \end{itemize}
 \end{frame}
 
 
