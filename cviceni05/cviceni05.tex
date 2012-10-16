@@ -128,7 +128,7 @@ int pole[delka]; // Toto v C89 nefunguje!
         \end{minted}
         \item Použijte preprocesorovou direktivu \texttt{define}
         \item Konstantu pište velkými písmeny.
-        \item Nebo použijte kompiátor podporující C99.
+        \item Nebo použijte kompilátor podporující C99.
         \begin{minted}[linenos=true]{c} 
 #define DELKA 10
 int pole[DELKA], i;
@@ -241,6 +241,54 @@ char str[] = "slovo";
 int i = -1;
 while (str[++i]);
     \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Tady začíná peklo} 
+    \begin{itemizex}
+        \item Pole je uloženo v paměti jako souvislý blok. 
+        \begin{minted}[linenos=true]{c} 
+int suda[5] = {2, 4, 6, 8, 10};
+int licha[5] = {1, 3, 5, 7, 9};
+suda[5] = 42;
+        \end{minted}
+        \item Pole \texttt{suda} nemá pátý index $\longrightarrow$ co se stane?
+        \item \uv{Někam} do paměti se uloží číslo 42.
+        \item !!!\underline{\textbf{NĚKAM}}!!! se uloží $\longrightarrow$ ZLO!!!
+        \item (Přesněji -- my víme kam, akorát nevíme, co tam je.)
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Vizualizace pekla} 
+\begin{minted}[linenos=true]{c} 
+----------------------------
+...|2|4|6|8|10|1|3|5|7|9|...
+----------------------------
+    ^suda      ^licha
+\end{minted}
+    \begin{itemizex}
+        \item Může se stát, že se do pole \texttt{licha} uloží 42 na první pozici.
+        \begin{minted}[linenos=true]{c} 
+suda[5] = 42;
+printf("%i", licha[0]); // Muze vypsat 42
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Ještě jeden příklad}
+\begin{minted}[linenos=true]{c} 
+int pole[3] = {4, 8, 10};
+char text[] = "Tohle je hodne zle.";
+pole[3] = 0;
+printf("'%s'", text); // Muze to vypsat ''
+\end{minted}
+    \begin{itemizex}
+        \item Opět se nula může uložit na místo \texttt{text[0]}.
+        \item Jenže nula ukončuje řetězec: \texttt{0 == '\textbackslash0'}
+        \item V proměnné \texttt{text} tak máme prázdný řetězec.
     \end{itemizex}
 \end{frame}
 
