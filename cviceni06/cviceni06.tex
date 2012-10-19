@@ -1,0 +1,414 @@
+\documentclass{beamer}
+\usetheme[pageofpages=z,
+          bullet=circle,
+          titleline=true,
+          alternativetitlepage=true,
+          titlepagelogo=uplogo,
+          ]{UVT}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{czech}
+\usepackage{minted}
+% \usepackage{url}
+
+
+\newenvironment{itemizex}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{8pt}%
+    \setlength{\parskip}{8pt}}%
+  {\end{itemize}}
+
+\newenvironment{enumeratex}%
+  {\large \begin{enumerate}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{enumerate}}
+
+
+\title{Základy programování 1 (KMI/ZP1 a KMI/UP1)}
+\subtitle{Cvičení 6: Funkce}
+\author{Lukáš Havrlant}
+\date{24. října 2012}
+\institute{Univerzita Palackého}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Co je to funkce} 
+    \begin{itemizex}
+        \item Část programu, kterou je možné opakovaně volat z různých míst kódu.
+        \item Funkce zpřehledňují programy.
+        \item Funkce jsme už používali: \texttt{printf}, \texttt{main}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Definice jednoduché funkce} 
+    \begin{itemizex}
+        \item Syntaxe:
+        \begin{minted}[linenos=true]{c} 
+void nazev_funkce() {
+    // prikazy...
+}
+        \end{minted}
+        \item Funkce definujeme mimo \texttt{main} funkci.
+        \item Příklad:
+        \begin{minted}[linenos=true]{c} 
+void novy_radek() {
+  printf("\n");
+}
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Volání funkce} 
+    \begin{itemize}
+        \item Pokud chceme zavolat funkci, použijeme k tomu operátor kulaté závorky \texttt{()}
+        \begin{minted}[linenos=true]{c} 
+// Toto je definice funkce novy_radek
+void novy_radek() {
+    printf("\n");
+}
+
+int main() {
+    printf("Ahoj svete!"); 
+    // Tady volame funkci novy radek
+    novy_radek(); 
+    return 0;         
+}
+// Vytiskne se: Ahoj svete!\n
+        \end{minted}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Funkci můžeme použít vícekrát} 
+    \begin{itemize}
+        \item Jednou definovanou funkci můžeme použít kolikrát chceme:
+        \begin{minted}[linenos=true]{c} 
+void novy_radek() {
+    printf("\n");
+}
+
+int main() {
+    novy_radek();
+    printf("Ahoj ");
+    novy_radek();
+    printf("svete!");
+    novy_radek();
+    return 0;
+}
+        \end{minted}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Parametry funkce} 
+    \begin{itemizex}
+        \item Co když nechceme vytisknout jen jeden řádek, ale obecně $n$ řádků?
+        \item Jak bychom napsali funkci, která by vypsala větší ze dvou čísel? 
+        \item $\longrightarrow$ pomocí parametrů funkce.
+        \item Parametry funkce nám umožňují předat funkci nějaké hodnoty.
+        \begin{minted}[linenos=true]{c} 
+void nazev_funkce(typ nazev1, typ nazev2, ...) { 
+    // prikazy... 
+}
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Příklad: Vypiš maximum ze dvou čísel} 
+    \begin{itemizex}
+        \item Funkce, která vypíše větší z předaných čísel:
+        \begin{minted}[linenos=true]{c} 
+void vypis_vetsi(int a, int b) {
+    int max = a > b ? a : b;
+    printf("Vetsi: %i", max);
+}
+
+int main() {
+    int x = -8, y = -51;
+    vypis_vetsi(2, 6); // Vetsi: 6
+    vypis_vetsi(x, y); // Vetsi: -8
+    vypis_vetsi(x + 8, vypis_vetsi(2, 6)); Vetsi: 6
+    return 0;
+}
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Příklad: Vypiš pole} 
+    \begin{itemizex}
+        \item Funkce na vypsání pole čísel:
+        \begin{minted}[linenos=true]{c} 
+void vypis_pole_cisel(int[] pole, int delka) {
+    int i;
+    for (i = 0; i < delka; i++) {
+        printf("%i ", pole[i]);
+    }
+}
+
+int main() {
+    int cisla[] = {1, 2, -7, 14};
+    vypis_pole_cisel(cisla, 4); // 1 2 -7 14 
+    return 0;
+}
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Návratová hodnota funkce} 
+    \begin{itemize}
+        \item Co když nechceme vypsat maximum dvou čísel, ale jen ho zjistit? 
+        \item Tedy chceme, aby nám funkce nějak vrátila větší ze dvou čísel.
+        \item Takto by se to mělo chovat: 
+        \begin{minted}[linenos=true]{c} 
+int vetsi = vetsi_cislo(5, 7);
+        \end{minted}
+        \item K tomu slouží příkaz \texttt{return} 
+        \item V definici musíme uvést, jaký typ funkce vrací. 
+        \item Pokud funkce nevrací nic, použijeme typ \texttt{void}. Syntaxe:
+        \begin{minted}[linenos=true]{c} 
+typ nazev_funkce(/* parametry */) {
+    // prikazy vcetne prikazu return
+}
+        \end{minted}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Příklad: Větší ze dvou čísel} 
+    \begin{itemize}
+        \item Funkce, která vrací větší ze dvou čísel:
+        \begin{minted}[linenos=true]{c} 
+int vetsi_cislo(int a, int b) {
+    int max = a > b ? a : b;
+    return max;
+}
+        \end{minted}
+        \item Výsledkem volání funkce bude hodnota vrácená příkazem \texttt{return}
+        \item S tou můžeme dále pracovat:
+        \begin{minted}[linenos=true]{c} 
+int main() {
+    int vetsi = vetsi_cislo(5, 7); // vetsi = 7
+    printf("vetsi: %i", vetsi_cislo(0, -4)); // vetsi: 0
+    return 0;
+}
+        \end{minted}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Příklad: Počet malých písmen v řetězci} 
+    \begin{itemize}
+        \item Funkce, která vrátí počet malých písmen v předaném řetězci
+        \begin{minted}[linenos=true]{c} 
+int pocet_malych_pismen(char[] retezec) {
+    char znak;
+    int i, pocet = 0;
+    for (i = 0; znak = retezec[i]; i++) {
+        if (znak >= 'a' && znak <= 'z') 
+            pocet++;
+    }
+    return pocet;
+}
+int main() {
+    printf("pocet: %i", pocet_malych_pismen("abcDEF"));
+    return 0;
+}
+        \end{minted}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Více příkazů return} 
+    \begin{itemizex}
+        \item Funkce může obsahovat více příkazů \texttt{return}.
+        \item Ve chvíli, kdy se narazí na první \texttt{return}, funkce skončí a vrátí hodnotu.
+        \begin{minted}[linenos=true]{c} 
+int obsahuje_cislici(char[] retezec) {
+    char znak;
+    int i;
+    for (i = 0; znak = retezec[i]; i++) {
+        if (znak >= '0' && znak <= '9') 
+            return 1;
+    }
+    return 0;
+}
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Cokoliv za returnem bude ignorováno} 
+    \begin{itemizex}
+        \item Tajemství funkce se nikdy nedovíme, \texttt{return} ukončí funkci dříve než nám to funkce stihne říci:
+        \begin{minted}[linenos=true]{c} 
+char rekni_tajemstvi() {
+    return 'x';
+    printf("Zboznuji Justina Biebera!\n");
+}
+
+int main() {
+    char z = rekni_tajemstvi();
+    return 0;
+}
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Nemůžeme ale vrátit pole} 
+    \begin{itemizex}
+        \item Tohle nemůžeme udělat:
+        \begin{minted}[linenos=true]{c} 
+int[] vrat_pole() {
+    int pole[] = {1, 2, 3};
+    return pole;
+}
+        \end{minted}
+        \item  O tom ale příště.
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Vrácenou hodnotu můžeme ignorovat} 
+    \begin{itemize}
+        \item Pokud funkce vrací nějakou hodnotu, nemusíme ji nijak používat
+        \begin{minted}[linenos=true]{c} 
+int soucet(int a, int b) {
+    int soucet = a + b;
+    printf("Soucet a + b = %i", soucet);
+    return soucet;
+}
+
+int main() {
+    int a;
+    soucet(4, 5);
+    a = soucet(10, 15);
+    return 0;
+}
+        \end{minted}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Rozsah platnosti lokálních proměnných} 
+    \begin{itemizex}
+        \item Parametry a lokální (interní) proměnné funkce existují pouze v rámci této funkce
+        \item Při vstupu do funkce je proměnná vytvořena
+        \item Při ukončení funkce je proměnná odstraněna
+        \item Platí to obecně pro jakýkoliv blok (např. cyklus)
+    \end{itemizex}
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{Příklad: Výpočet diskriminantu} 
+    \begin{minted}[linenos=true]{c} 
+double diskriminant(double a, double b, double c) {
+    double b_na_druhou = b * b;
+    double diskr = b_na_druhou - (4 * a * c);
+    return diskr;
+}
+
+int main() {
+    double a = 2.26, b = 7.7, x = 3.4;
+    double diskr = 0;
+    double vysledek = diskriminant(b, a, x);
+    printf("diskr: %g, vysledek: %g", diskr, vysledek);
+    // diskr: 0, vysledek: -99.6124
+    printf("b_na_druhou: %g", b_na_druhou); // CHYBA!
+}
+    \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Ukončením bloku zaniká proměnná} 
+    \begin{itemizex}
+        \item Pokud máme v libovolném bloku definovanou proměnnou, po skončení bloku proměnná zaniká
+        \begin{minted}[linenos=true]{c} 
+int main() {
+    int a = 1;
+    if (a == 1) {
+        char znak = '!';
+        printf("%c", znak);
+        a = 3;
+    }
+    printf("%i", a); // V poradku
+    printf("%c", znak); // CHYBA! Znak uz neexistuje
+}
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Globální proměnná} 
+    \begin{itemizex}
+        \item Globální proměnnou definujeme mimo všechny bloky.
+        \item Tj. mimo všechny funkce, tedy i mimo funkci \texttt{main}.
+        \item Proměnná vzniká při spuštění programu a odstraňuje se při ukončení programu.
+        \item Globální proměnné mohou být i nebezpečné.
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Příklad: Počet volání funkce} 
+    \begin{itemize}
+        \item Funkce, která si v globální proměnné \texttt{pocet\_volani} pamatuje, kolikrát jsme ji zavolali
+        \begin{minted}[linenos=true]{c} 
+int pocet_volani = 0;
+void vypis_moudro(char moudro[]) {
+    printf("Vypisuji moudro: %s\n", moudro);
+    pocet_volani++;
+}
+int main() {
+    vypis_moudro("Globalni promenne jsou uzitecne.");
+    vypis_moudro("Ale ne vzdy.");
+    vypis_moudro("Obcas jsou vylozene zle.");
+    printf("%i", pocet_volani); // 3
+    return 0;
+}
+        \end{minted}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Statická proměnná} 
+    \begin{itemizex}
+        \item Statická lokální proměnná je proměnná uvnitř bloku, která nezaniká s ukončením bloku, ale přežije do konce programu.
+        \item Definujeme ji použitím klíčového slova \texttt{static}.
+        \item K proměnné se ale dostaneme pouze v bloku, ve kterém proměnná existuje.
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Příklad: Počet volání funkce pomocí statické proměnné} 
+    \begin{minted}[linenos=true]{c} 
+int funkce() {
+    static int pocet = 0;
+    // udelej neco strasne uzitecneho
+    pocet++;
+    return pocet;
+}
+
+int main() {
+    funkce();
+    funkce();
+    funkce();
+    printf("pocet volani: %i", funkce());
+}
+    \end{minted}
+\end{frame}
+
+
+
+
+\end{document}
