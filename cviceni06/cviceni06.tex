@@ -149,7 +149,7 @@ int main() {
     \begin{itemizex}
         \item Funkce na vypsání pole čísel:
         \begin{minted}[linenos=true]{c} 
-void vypis_pole_cisel(int[] pole, int delka) {
+void vypis_pole_cisel(int pole[], int delka) {
     int i;
     for (i = 0; i < delka; i++) {
         printf("%i ", pole[i]);
@@ -212,7 +212,7 @@ int main() {
     \begin{itemize}
         \item Funkce, která vrátí počet malých písmen v předaném řetězci
         \begin{minted}[linenos=true]{c} 
-int pocet_malych_pismen(char[] retezec) {
+int pocet_malych_pismen(char retezec[]) {
     char znak;
     int i, pocet = 0;
     for (i = 0; znak = retezec[i]; i++) {
@@ -409,6 +409,79 @@ int main() {
 \end{frame}
 
 
+\begin{frame}[t,fragile]\frametitle{Funkce mohou volat jiné funkce} 
+    \begin{itemizex}
+        \item Námi definovaná funkce může volat jinou námi definovanou funkci:
+        \begin{minted}[linenos=true]{c} 
+void novy_radek() {
+    printf("\n");
+}
+
+int soucet(int a, int b) {
+    int soucet = a + b;
+    printf("soucet a + b = %i", soucet);
+    novy_radek();
+}
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{\dots ale musíme je definovat dříve, než je použijeme} 
+    \begin{itemizex}
+        \item U definic funkcí záleží na pořadí, toto nebude fungovat:
+        \begin{minted}[linenos=true]{c} 
+int soucet(int a, int b) {
+    int soucet = a + b;
+    printf("soucet a + b = %i", soucet);
+    novy_radek(); // Tahle funkce zatim neexistuje
+}
+
+void novy_radek() {
+    printf("\n");
+}
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Deklarace funkcí} 
+    \begin{itemizex}
+        \item Pomocí deklarací můžeme programu říci, jaké funkce v souboru jsou.
+        \item Nemusíme si pak dělat starosti s pořadím definic. 
+        \begin{minted}[linenos=true]{c} 
+typ nazev_funkce(typ1, typ2, ..., typn);
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Příklad se součtem} 
+    \begin{minted}[linenos=true]{c} 
+int soucet(int, int);
+void novy_radek();
+
+int soucet(int a, int b) {
+    int soucet = a + b;
+    printf("soucet a + b = %i", soucet);
+    novy_radek();
+}
+
+void novy_radek() {
+    printf("\n");
+}
+    \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Úlohy}
+\begin{center}
+\vskip 1cm
+{\Large Seznam úloh je na \url{http://KMIup1.jdem.cz}}
+\vskip 2cm
+\url{http://tux.inf.upol.cz/~havrlant/}
+\end{center}
+\end{frame}
 
 
 \end{document}
