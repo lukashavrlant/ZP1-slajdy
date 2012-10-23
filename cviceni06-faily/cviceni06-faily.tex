@@ -1,0 +1,203 @@
+\documentclass{beamer}
+\usetheme[pageofpages=z,
+          bullet=circle,
+          titleline=true,
+          alternativetitlepage=true,
+          titlepagelogo=uplogo,
+          ]{UVT}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{czech}
+\usepackage{minted}
+% \usepackage{url}
+
+
+\newenvironment{itemizex}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{8pt}%
+    \setlength{\parskip}{8pt}}%
+  {\end{itemize}}
+
+\newenvironment{enumeratex}%
+  {\large \begin{enumerate}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{enumerate}}
+
+
+\title{Základy programování 1 (KMI/ZP1 a KMI/UP1)}
+\subtitle{Poznámky k úkolům z cvičení 5}
+\author{Lukáš Havrlant}
+\date{24. října 2012}
+\institute{Univerzita Palackého}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Nepoužívejte číselné konstanty} 
+\begin{minted}[linenos=true]{c} 
+int sito[100];
+for(i = 2; i < 100; i++)
+    sito[i] = 1;
+
+for(i = 2; i < 100; i++){
+    if(sito[i] == 0) continue;
+    for(j = i * 2; j < 100; j += i)
+        sito[j] = 0;
+}    
+
+for(i = 2; i < 100; i++) {
+    if(sito[i] == 1)
+        printf("%d ", i);
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Konstantu si někam uložte} 
+\begin{minted}[linenos=true]{c} 
+#define POCET_PRVOCISEL 100
+int sito[100];
+for(i = 2; i < POCET_PRVOCISEL; i++)
+    sito[i] = 1;
+
+for(i = 2; i < POCET_PRVOCISEL; i++){
+    if(sito[i] == 0) continue;
+    for(j = i * 2; j < POCET_PRVOCISEL; j += i)
+        sito[j] = 0;
+}    
+
+for(i = 2; i < POCET_PRVOCISEL; i++) {
+    if(sito[i] == 1)
+        printf("%d ", i);
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Nepoužívejte zbytečně continue} 
+\begin{minted}[linenos=true]{c} 
+for(i = 2; i < POCET_PRVOCISEL; i++){
+    if(sito[i] == 0) continue;
+    for(j = i * 2; j < POCET_PRVOCISEL; j += i)
+        sito[j] = 0;
+}
+
+// Vetsinou byva prehlednsi tato varianta:
+for(i = 2; i < POCET_PRVOCISEL; i++){
+    if(sito[i] > 0) {
+        for(j = i * 2; j < POCET_PRVOCISEL; j += i)
+            sito[j] = 0;
+    }
+}  
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Používejte různé konstanty} 
+\begin{minted}[linenos=true]{c} 
+// ukol 1
+#define DELKA 10
+
+// ukol 3
+#define DELKA 100
+
+// Konstanta by mela byt v ramci programu unikatni
+// Takze lepe nejak takto. Idealne, aby byly definice hned pod includy
+#include <stdio.h>
+#define DELKA_SUMA 10
+#define POCET_PRVOCISEL 100
+// ukol 1
+// ukol 3
+
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Kód nemá být namačkaný na sebe} 
+\begin{minted}[linenos=true]{c} 
+void soucet_prefixu()  {
+    int i, soucet, cisla[5] = {1,2,5,7,9};
+    for (i = 0; i < 5; i++)
+        printf("%i ",cisla[i]);
+    for (soucet = 0, i = 0; i < 5; i++) {
+        soucet = soucet + cisla[i];
+        printf("%i ", soucet);
+    }
+}
+void cetnost_znaku() {
+    char text[] = "aoddr ff223ca ambte dfghn!";
+    int cetnost[256];
+    int i, j;
+    for (i = 0; i < 256; i++)... 
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Používejte prázdné řádky} 
+\begin{minted}[linenos=true]{c} 
+void soucet_prefixu()  {
+    int i, soucet, cisla[5] = {1,2,5,7,9};
+
+    for (i = 0; i < 5; i++)
+        printf("%i ",cisla[i]);
+
+    for (soucet = 0, i = 0; i < 5; i++) {
+        soucet = soucet + cisla[i];
+        printf("%i ", soucet);
+    }
+}
+
+void cetnost_znaku() {
+    char text[] = "aoddr ff223ca ambte dfghn!";
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Ale přidávejte je s citem!} 
+\begin{minted}[linenos=true]{c} 
+for(x=0;x<100;x++)
+            {
+                if(poleprvku[x] == 0)
+
+                    continue;
+
+
+
+
+                printf("%d\t", poleprvku[x]);
+
+                for(z=2 * x;z<100;z=z+x)
+                {
+
+                  poleprvku[z]=0;
+
+
+                }
+
+
+            }
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Nepoužívejte vícekrát include} 
+\begin{minted}[linenos=true]{c} 
+// ukol 1
+#include <stdio.h>
+
+// ukol 2
+#include <stdio.h>
+
+// ukol 3
+#include <stdio.h>
+
+// Spravne jen jeden include na zacatku souboru
+\end{minted}
+\end{frame}
+
+\end{document}

@@ -97,12 +97,12 @@ void novy_radek() {
 
 int main() {
     novy_radek();
-    printf("Ahoj ");
+    printf("Ahoj");
     novy_radek();
     printf("svete!");
     novy_radek();
     return 0;
-}
+} // Vytiskne se: \nAhoj\nsvete!\n
         \end{minted}
     \end{itemize}
 \end{frame}
@@ -113,7 +113,7 @@ int main() {
         \item Co když nechceme vytisknout jen jeden řádek, ale obecně $n$ řádků?
         \item Jak bychom napsali funkci, která by vypsala větší ze dvou čísel? 
         \item $\longrightarrow$ pomocí parametrů funkce.
-        \item Parametry funkce nám umožňují předat funkci nějaké hodnoty.
+        \item Parametry se uvnitř funkce chovají jako lokální proměnné
         \begin{minted}[linenos=true]{c} 
 void nazev_funkce(typ nazev1, typ nazev2, ...) { 
     // prikazy... 
@@ -137,7 +137,7 @@ int main() {
     int x = -8, y = -51;
     vypis_vetsi(2, 6); // Vetsi: 6
     vypis_vetsi(x, y); // Vetsi: -8
-    vypis_vetsi(x + 8, vypis_vetsi(2, 6)); Vetsi: 6
+    vypis_vetsi(5 + 10, x - 4 * 2); // Vetsi: 15
     return 0;
 }
         \end{minted}
@@ -224,7 +224,7 @@ int pocet_malych_pismen(char retezec[]) {
 int main() {
     printf("pocet: %i", pocet_malych_pismen("abcDEF"));
     return 0;
-}
+} // Vypise: pocet: 3
         \end{minted}
     \end{itemize}
 \end{frame}
@@ -235,7 +235,7 @@ int main() {
         \item Funkce může obsahovat více příkazů \texttt{return}.
         \item Ve chvíli, kdy se narazí na první \texttt{return}, funkce skončí a vrátí hodnotu.
         \begin{minted}[linenos=true]{c} 
-int obsahuje_cislici(char[] retezec) {
+int obsahuje_cislici(char retezec[]) {
     char znak;
     int i;
     for (i = 0; znak = retezec[i]; i++) {
@@ -293,8 +293,8 @@ int soucet(int a, int b) {
 
 int main() {
     int a;
-    soucet(4, 5);
-    a = soucet(10, 15);
+    soucet(4, 5); // Soucet a + b = 9
+    a = soucet(10, 15); // Soucet a + b = 25
     return 0;
 }
         \end{minted}
@@ -339,10 +339,10 @@ int main() {
     int a = 1;
     if (a == 1) {
         char znak = '!';
-        printf("%c", znak);
+        printf("'%c'", znak); // Vytiskne: '!'
         a = 3;
     }
-    printf("%i", a); // V poradku
+    printf("'%i'", a); // V poradku, vytiskne se '3'
     printf("%c", znak); // CHYBA! Znak uz neexistuje
 }
         \end{minted}
@@ -404,7 +404,7 @@ int main() {
     funkce();
     funkce();
     printf("pocet volani: %i", funkce());
-}
+} // pocet volani: 4
     \end{minted}
 \end{frame}
 
