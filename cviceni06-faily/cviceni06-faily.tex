@@ -200,4 +200,26 @@ for(x=0;x<100;x++)
 \end{minted}
 \end{frame}
 
+
+\begin{frame}[t,fragile]\frametitle{Jak projít řetězec} 
+\begin{minted}[linenos=true]{c} 
+int main() {
+    char znak;
+    char retezec[] = "ahoj";
+    int delka = -1, i;
+    while(retezec[++delka]);
+
+    for (i = 0; i < delka; i++)
+        printf("%c", retezec[i]);
+
+    // lepe:
+    i = 0;
+    while(znak = retezec[i]) {
+        printf("%c", retezec[i]);
+        i++;
+    }
+}
+\end{minted}
+\end{frame}
+
 \end{document}

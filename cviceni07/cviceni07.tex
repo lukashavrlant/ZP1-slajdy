@@ -1,0 +1,615 @@
+\documentclass{beamer}
+\usetheme[pageofpages=z,
+          bullet=circle,
+          titleline=true,
+          alternativetitlepage=true,
+          titlepagelogo=uplogo,
+          ]{UVT}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{czech}
+\usepackage{minted}
+\usepackage{color}
+% \usepackage{url}
+
+
+\newenvironment{itemizex}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{8pt}%
+    \setlength{\parskip}{8pt}}%
+  {\end{itemize}}
+
+\newenvironment{enumeratex}%
+  {\large \begin{enumerate}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{enumerate}}
+
+
+\title{Základy programování 1 (KMI/ZP1 a KMI/UP1)}
+\subtitle{Cvičení 7: Opakování látky}
+\author{Lukáš Havrlant}
+\date{24. října 2012}
+\institute{Univerzita Palackého}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Z čeho se skládá zdrojový soubor} 
+\begin{minted}[linenos=true]{c} 
+#include <stdio.h>
+#define POZDRAV "Nashledanou!\n"
+
+int status = 0; 
+
+void slusne_pozdrav(char[]);
+
+void slusne_pozdrav(char pozdrav[]) { 
+    printf("%s", pozdrav); 
+}
+
+int main() {
+    slusne_pozdrav(POZDRAV);
+    return status;     
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{Rozdíl oproti Scheme} 
+\begin{minted}[linenos=true]{scheme} 
+(define pozdrav 'nasledanou)
+(define slusne-pozdrav
+    (lambda (x)
+        (print x)))
+
+(slusne-pozdrav pozdrav)
+\end{minted}
+
+\begin{itemizex}
+    \item Ve Schemu nepotřebujeme \texttt{main} funkci. 
+    \item A nepotřebujeme includovat hlavičkové soubory kvůli printu
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Proměnné} 
+\begin{minted}[linenos=true]{c} 
+int main() {
+    int x = 0;          // Cele cislo
+    int y;              // Cele cislo, ale neinicializovane
+    double q = 5.123;   // Desetinne cislo
+    char z = '!';       // Znak 
+
+    printf("x: %i, y: %i\n", x, y); 
+    // x: 0, y: 1481518256
+    // x: 0, y: 1588624560
+
+    printf("Znak: %c, ciselny kod: %i\n", z, z);
+    // Znak: !, ciselny kod: 33
+    return 0;
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Rozdíl oproti Scheme} 
+\begin{minted}[linenos=true]{scheme} 
+(let ((a 0)
+      (b 12.4465)
+      (c 1232354576785632452345234123534)
+      (d 'symbol)
+      (e '(1 2 3 4)))
+  c)
+\end{minted}
+\end{frame}
+
+
+% \begin{frame}[t,fragile]\frametitle{Logické operátory} 
+% \begin{itemizex}
+%     \item Nula je \uv{nepravda}. Vše ostatní je \uv{pravda}.
+% \end{itemizex}
+% \begin{minted}[linenos=true]{c} 
+% int x;
+% x = 6 && 0;
+% x = 6 || 0;       
+% x = !6;           
+% x = !(7 && 10);  
+% x = 6 < !10;     
+% x = (6 == 6);
+% x = (6 != 7);  
+
+% int y = 10;     
+% x = (y == 10);  
+% x = (y = 15);   
+% \end{minted}
+% \end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Logické operátory v Céčku ve Scheme} 
+\begin{minted}[linenos=true]{c} 
+x = 6 && 0;
+x = 6 || 0;
+x = 0 || (5 == 0) || 10 || 0;
+x = !6;
+x = !(0 &&);
+\end{minted}
+
+\begin{minted}[linenos=true]{scheme} 
+(and 6 0)
+(and 6 #f)
+(or 6 #f)
+(or #f (= 5 0) 10 #f)
+(not 6)
+(not (and 0))
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Větvení programu} 
+\begin{minted}[linenos=true]{c} 
+int main() {
+    int a = 10, b = 20;
+    if (2 * a < b) {
+        printf("...");
+    } else {
+        printf("!!!");
+    }
+
+    if (a = b) {
+        printf("a: %i", a); 
+    } else {
+        printf("a: %i", a); 
+    }
+    return 0;
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Cyklus while} 
+\begin{minted}[linenos=true]{c} 
+int main() {
+    int i = 0;
+    while (i < 5) {
+        printf("%i, ", i);
+        i++;
+    }
+
+    return 0;
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Jiný příklad} 
+\begin{minted}[linenos=true]{c} 
+int main() {
+    int i = 1, mocnina;
+    while (i * i < 100) {
+        printf("Mocnina: %i", i * i);
+        i++;
+    } // 1, 4, 9, 16, 25, 36, 49, 64, 81,
+
+    return 0;
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Inkrementovat můžeme jak chceme} 
+\begin{minted}[linenos=true]{c} 
+int main() {
+    int i = 1;
+    while (i < 100) {
+        printf("%i, ", i);
+        i += i;
+    } // 1, 2, 4, 8, 16, 32, 64, 
+
+
+    for (i = 1; i < 100; i += i)
+        printf("%i, ", i);
+    // 1, 2, 4, 8, 16, 32, 64, 
+
+    return 0;
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Trojúhelník} 
+\begin{minted}[linenos=true]{c} 
+int main() {
+    int i, j, delka = 4;
+
+    for (i = 1; i <= delka; i++) {
+        for (j = 0; j < i; j++) {
+            printf("*");
+        }
+        printf("\n");
+    }
+}
+// *
+// **
+// ***
+// ****
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Co je to jednorozměrné pole}
+\begin{itemizex}
+    \item Je to tabulka s jedním řádkem a $x$ sloupci. 
+    \item Délka pole = $x$ = počet sloupců.
+    \item Příklad: pole o délce 5:
+    \item 
+\begin{tabular}{|c|c|c|c|c|}
+\hline 1& 2 & 4 & 8 &16 \\\hline
+\end{tabular}
+    \item Prvky pole jsou očíslovány:
+    \item 
+\begin{tabular}{|c|c|c|c|c|}
+\hline 1& 2 & 4 & 8 &16 \\\hline
+\end{tabular}\\
+\begin{tabular}{ccccc}
+ 0&1&2&3&4
+\end{tabular}
+\end{itemizex}
+
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Pole jako matematická posloupnost} 
+\begin{itemizex}
+    \item Příklad posloupnosti: $a_i = i^2$
+    \item Tj. posloupnost $1, 4, 9, 16, 25, 36, \dots$
+    \item K prvkům přistupujeme pomocí indexu: $a_3$ je rovno 9. 
+    \item Proč? Třetí prvek posloupnosti. 
+    \item Zrada: pole jsou indexovány od nuly, posloupnosti od jedničky. 
+\end{itemizex}
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{Jak přistupovat k prvkům pole} 
+\begin{minted}[linenos=true]{c} 
+int pole[] = {14, 10, -5, 14, 58, 69, 16};
+\end{minted}
+
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline 14& 10 & -5 & 14 &58 &69& 16 \\\hline
+\end{tabular}\\
+\begin{tabular}{ccccccc}
+ \,0\,\,\,&1\,\,\,\,&2\,\,\,&3\,\,\,&4\,\,&5\,\,&6
+\end{tabular}
+\vskip 1cm
+\begin{minted}[linenos=true]{c} 
+int cislo = pole[5];
+\end{minted}
+
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline 14& 10 & -5 & 14 &58 &{\color{red} 69}& 16 \\\hline
+\end{tabular}\\
+\begin{tabular}{ccccccc}
+ \,0\,\,\,&1\,\,\,\,&2\,\,\,&3\,\,\,&4\,\,&{\color{red}5}\,\,&6
+\end{tabular}
+
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Jak zapisovat do pole} 
+\begin{minted}[linenos=true]{c} 
+int pole[] = {14, 10, -5, 14, 58, 69, 16};
+pole[1] = 47;
+\end{minted}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline 14& {\color{red}10} & -5 & 14 &58 &69& 16 \\\hline
+\end{tabular}\\
+\begin{tabular}{ccccccc}
+ \,0\,\,\,&{\color{red}1}\,\,\,\,&2\,\,\,&3\,\,\,&4\,\,&5\,\,&6
+\end{tabular}
+$$
+\downarrow
+$$
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline 14& {\color{red}47} & -5 & 14 &58 &69& 16 \\\hline
+\end{tabular}\\
+\begin{tabular}{ccccccc}
+ \,0\,\,\,&{\color{red}1}\,\,\,\,&2\,\,\,&3\,\,\,&4\,\,&5\,\,&6
+\end{tabular}
+\end{center}
+
+\begin{minted}[linenos=true]{c} 
+int cislo = pole[1]; // cislo = 47
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Definice pole} 
+\begin{minted}[linenos=true]{c} 
+int pole1[5];
+int pole2[] = {2, 7, 9, 14, -7, -7};
+int pole3[10] = {-5, 81};
+\end{minted}
+
+\vskip 5mm
+pole1:
+\begin{tabular}{|p{4mm}|p{4mm}|p{4mm}|p{4mm}|p{4mm}|}
+\hline & & & & \\\hline
+\end{tabular}
+
+\vskip 5mm
+pole2:
+\begin{tabular}{|p{4mm}|p{4mm}|p{4mm}|p{4mm}|p{4mm}|p{4mm}|}
+\hline 2& 7& 9& 14& -7 & -7\\\hline
+\end{tabular}
+
+\vskip 5mm
+pole3:
+\begin{tabular}{|p{4mm}|p{4mm}|p{4mm}|p{4mm}|p{4mm}|p{4mm}|p{4mm}|p{4mm}|p{4mm}|p{4mm}|}
+\hline -5&81&0&0&0&0&0&0&0&0 \\\hline
+\end{tabular}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Procházení pole} 
+\begin{minted}[linenos=true]{c} 
+int main() {
+    int delka = 6, i, soucet = 0;
+    int vek[] = {15, 18, 64, 34, 42, 2};
+
+    for (i = 0; i < delka; i++)
+        printf("%i ", vek[i]);
+    // Vypise: 15 18 64 34 42 2 
+
+    for (i = 0; i < delka; i++) 
+        soucet += vek[i];
+    printf("%i", soucet);
+    // 175
+
+    return 0;     
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Změna prvků v poli} 
+\begin{minted}[linenos=true]{c} 
+int main() {
+    int delka = 5, i;
+    int pole[] = {6, 0, 7, 1, 10};
+
+    for (i = 0; i < delka; i++) 
+        pole[i] = pole[i] * 2;
+
+    return 0;     
+}
+\end{minted}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 6&0&7&1&10 \\\hline
+\end{tabular}
+$$
+\downarrow
+$$
+\begin{tabular}{|c|c|c|c|c|}
+\hline 12&0&14&2&20 \\\hline
+\end{tabular}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Posunutí pole} 
+\begin{minted}[linenos=true]{c} 
+int delka = 6, i, temp;
+int pole[] = {4, 5, 6, 7, 8, 9};
+
+temp = pole[delka-1];
+for (i = delka - 1; i > 0; i--) 
+    pole[i] = pole[i - 1];
+pole[0] = temp;
+\end{minted}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 4&5&6&7&8&9 \\\hline
+\end{tabular}
+$$
+\downarrow
+$$
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 9&4&5&6&7&8 \\\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Řetězec} 
+\begin{minted}[linenos=true]{c} 
+int main() {
+    char pozdrav1[] = "ahoj";
+    char pozdrav2[] = {'a', 'h', 'o', 'j', '\0'};
+    printf("%s\n", pozdrav1); // ahoj
+    printf("%s\n", pozdrav2); // ahoj
+    return 0;     
+}
+\end{minted}
+
+pozdrav1, pozdrav2: \\
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 'a'&'h'&'o'&'j'&'\textbackslash0' \\\hline
+\end{tabular}
+\end{center}
+\vskip 5mm
+Případně jako číselné pole:\\
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 97 &104 &111 &106 &0 \\\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Jak procházet řetězec} 
+\begin{minted}[linenos=true]{c} 
+int main() {
+    int i, delka = 5;
+    int cisla[] = {3, 6, 9, 12, 15};
+    char skupina[] = "Burzum";
+
+    for (i = 0; i < delka; i++)
+        printf("%i,", cisla[i]);
+    // 2,6,7,0,9,
+
+    for (i = 0; skupina[i] != '\0'; i++) 
+        printf("%c,", skupina[i]);
+    // B,u,r,z,u,m,
+
+    return 0;     
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Rozdíl mezi číselným polem a řetězcem} 
+\begin{itemizex}
+    \item U klasického číselného pole není v paměti žádná \uv{zarážka}
+    \item Pokud neznáme délku pole, nepoznáme, jestli $65$ patří k našemu poli nebo ne.
+    \item U řetězce zarážku máme.
+\end{itemizex}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 3& 6& 9& 12& 15 &65&-457&145&964&74&-4 \\\hline
+\end{tabular}
+\vskip 5mm
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 'B'&'u'&'r'&'z'&'u'&'m'&'\textbackslash0'&475&565&7416 \\\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{S řetězcem můžeme pracovat jako s číselným polem} 
+\begin{minted}[linenos=true]{c} 
+int main() {
+    int i;
+    char retezec[] = "abcdef";
+
+    for (i = 0; retezec[i] != '\0'; i++)
+        retezec[i] += 2;
+
+    printf("%s\n", retezec);
+    // cdefgh
+
+    return 0;     
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Funkce} 
+\begin{itemizex}
+    \item Obecná definice:
+    \begin{minted}[linenos=true]{c} 
+typ nazev(typ1 nazev1, typ2 nazev2, ...) {
+    // telo funkce
+}
+    \end{minted}
+    \item Příklad:
+    \begin{minted}[linenos=true]{c} 
+double prumer(int a, int b, int c) {
+    return (a + b + c) / 3.0;
+}
+    \end{minted}
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Souvislosti se Scheme} 
+\begin{itemize}
+    \item C:
+\begin{minted}[linenos=true]{c} 
+int na2(int x) {
+    return x * x;
+}
+
+int main() {
+    na2(6);
+}
+\end{minted}
+    \item Scheme:
+\begin{minted}[linenos=true]{scheme} 
+(define na2
+  (lambda (x)
+    (* x x)))
+
+(na2 6)
+\end{minted}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Na čtvrtou} 
+\begin{itemizex}
+    \item Matematicky:
+$$
+x^4 = (x^2)^2
+$$
+    \item C:
+\begin{minted}[linenos=true]{c} 
+int na4(int x) {
+    return na2(na2(x));
+}
+\end{minted}
+    \item Scheme:
+\begin{minted}[linenos=true]{scheme} 
+(define na4
+  (lambda (x)
+    (na2 (na2 x))))
+\end{minted}
+\end{itemizex}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Řešení kvadratické rovnice} 
+\begin{minted}[linenos=true]{c} 
+double diskriminant(double a, double b, double c) {
+    return na2(b) - (4 * a * c);
+}
+double reseni_rovnice(double a, double b, double odm_diskr) {
+    return (-b + odm_diskr) / (2 * a);
+}
+void kv_rovnice(double a, double b, double c) {
+    double diskr = diskriminant(a, b, c); // diskr = 1
+    double odm_diskr = sqrt(diskr); 
+    printf("x1: %g\n", reseni_rovnice(a, b, odm_diskr)); 
+    printf("x2: %g\n", reseni_rovnice(a, b, -odm_diskr)); 
+}
+int main() { // x^2 + 7x + 12 = 0
+    kv_rovnice(1, 7, 12);  
+}
+\end{minted}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]{Úlohy}
+\begin{center}
+\vskip 1cm
+{\Large Seznam úloh je na \url{http://KMIup1.jdem.cz}}
+\vskip 2cm
+\url{http://tux.inf.upol.cz/~havrlant/}
+\end{center}
+\end{frame}
+
+
+\end{document}
