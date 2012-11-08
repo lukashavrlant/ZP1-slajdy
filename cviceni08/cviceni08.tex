@@ -1,0 +1,423 @@
+\documentclass{beamer}
+\usetheme[pageofpages=z,
+          bullet=circle,
+          titleline=true,
+          alternativetitlepage=true,
+          titlepagelogo=uplogo,
+          ]{UVT}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{czech}
+\usepackage{minted}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{graphicx}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+% \usepackage{url}
+
+
+\newenvironment{itemizex}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{8pt}%
+    \setlength{\parskip}{8pt}}%
+  {\end{itemize}}
+
+\newenvironment{enumeratex}%
+  {\large \begin{enumerate}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{enumerate}}
+
+
+\title{Základy programování 1 (KMI/ZP1 a KMI/UP1)}
+\subtitle{Cvičení 8: Strukturované datové typy}
+\author{Lukáš Havrlant}
+\date{7. října 2012}
+\institute{Univerzita Palackého}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Poznámka z úkolům} 
+\begin{center}
+\vskip 1cm
+{\LARGE NIKDY NEPOUŽÍVEJTE\\
+\vskip 5mm 
+GLOBÁLNÍ PROMĚNNÉ!!!
+}
+\\
+\vskip 1cm
+{\small (Leda byste fakt museli.)}
+\end{center}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Poznámka k úkolům} 
+\begin{minted}[linenos=true]{c} 
+int i, soucet = 0, temp;
+void obrat_pole(int pole[], int delka) {
+    for (i = 0; i < delka / 2; i++) {
+        temp = pole[i];
+        pole[i] = pole[delka - i - 1];
+        pole[delka - i - 1] = temp;
+    }
+}
+int soucet_cifer(int cislo) {
+    while (cislo > 0) {
+        soucet += cislo % 10;
+        cislo /= 10;
+    }
+    return soucet;
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{George Boole} 
+    \begin{itemizex}
+        \item Britský matematik, 1815--1864
+        \item Jeden ze zakladatelů informatiky
+        \item Spolupracoval s A. De Morganem: $\neg(p\vee q) = (\neg p) \wedge (\neg q)$
+        \item Je po něm pojmenována Booleova algebra
+        \item \dots a kráter na Měsíci
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Motivace} 
+    \begin{itemizex}
+        \item Mějme funkci, která zjišťuje, zda je v poli nula:
+        \begin{minted}[linenos=true]{c} 
+int obsahuje_nulu(int cisla[], int delka) {
+    int i;
+    for (i = 0; i < delka; i++)
+        if (cisla[i] == 0) 
+            return 1;
+    return 0;
+}
+        \end{minted}
+        \item Jak zařídit, abychom poznali, že funkce vrací jen pravda/nepravda?
+        \item Jak zařídit, abychom mohli psát TRUE/FALSE místo 0/1?
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Čeho chceme dosáhnout} 
+    \begin{itemizex}
+        \item Boolean, Bool -- název typu pro pravdu/nepravdu. 
+    \end{itemizex}
+        \begin{minted}[linenos=true]{c} 
+Bool obsahuje_nulu(int cisla[], int delka) {
+    int i;
+    for (i = 0; i < delka; i++)
+        if (cisla[i] == 0) 
+            return TRUE;
+    return FALSE;
+}
+        \end{minted}
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{Řešení pomocí konstant} 
+\begin{minted}[linenos=true]{c} 
+#define Bool int
+#define TRUE 1
+#define FALSE 0
+
+Bool obsahuje_nulu(int cisla[], int delka) {
+    int i;
+    for (i = 0; i < delka; i++)
+        if (cisla[i] == 0) 
+            return TRUE;
+    return FALSE;
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Konstrukce \texttt{typedef}} 
+    \begin{itemizex}
+        \item Pomocí příkazu \texttt{typedef} můžeme definovat nová vlastní jména existujícím typům.
+        \begin{minted}[linenos=true]{c} 
+typedef zapis_ve_tvaru_deklarace;
+        \end{minted}
+        \item Použití:
+        \begin{minted}[linenos=true]{c} 
+typedef int Bool;
+        \end{minted}
+        \item Typ \texttt{Bool} se stane aliasem pro typ \texttt{int}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Řešení pomocí \texttt{typedef}} 
+\begin{minted}[linenos=true]{c} 
+typedef int Bool;
+#define TRUE 1
+#define FALSE 0
+
+Bool obsahuje_nulu(int cisla[], int delka) {
+    int i;
+    for (i = 0; i < delka; i++)
+        if (cisla[i] == 0) 
+            return TRUE;
+    return FALSE;
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Další příklady použití konstrukce \texttt{typedef}} 
+\begin{minted}[linenos=true]{c} 
+typedef int cele_cislo; 
+typedef int male_pole[10]; 
+typedef char retezec[];
+
+int main() {
+    int postaru = 47;
+    cele_cislo novy_zpusob = 47;
+    male_pole cisla;
+    retezec film = "Braindead - Zivi mrtvi";
+    return 0;     
+}
+\end{minted}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Použití výčtového typu} 
+    \begin{itemizex}
+        \item Výčtový typ umožňuje definovat nový typ a konstanty zároveň.
+        \item Výčtový typ definujeme pomocí konstrukce \texttt{enum}.
+    \end{itemizex}
+\begin{minted}[linenos=true]{c} 
+typedef enum{TRUE = 1, FALSE = 0} Bool;
+
+Bool obsahuje_nulu(int cisla[], int delka) {
+    int i;
+    for (i = 0; i < delka; i++)
+        if (cisla[i] == 0) 
+            return TRUE;
+    return FALSE;
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Příklad druhý, dny v týdnu} 
+\begin{minted}[linenos=true]{c} 
+typedef enum{PO, UT, ST, CT, PA, SO, NE} Den;
+// typedef enum{PO = 0, UT = 1, ST = 2, 
+// CT = 3, PA = 4, SO = 5, NE = 6} Den;
+
+int main() {
+    Den statnice;
+    Den cviceniZP1 = ST;
+    Den dnes = SO;
+    if (dnes == PO) 
+        rychle_dodelat_ukoly();
+    printf("Den: %i\n", UT); // Den: 1
+    return 0;     
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Poznámka z úkolům: opakování} 
+\begin{center}
+\vskip 1cm
+{\LARGE NIKDY NEPOUŽÍVEJTE\\
+\vskip 5mm 
+GLOBÁLNÍ PROMĚNNÉ!!!
+}
+\\
+\vskip 1cm
+{\small (Leda byste fakt museli.)}
+\end{center}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Struktury: motivace} 
+    \begin{itemizex}
+        \item Jak reprezentovat \uv{datum}? Např. 18. 2. 2012.
+        \item Jak předat datum jako parametr funkce a jak vrátit datum?
+\begin{minted}[linenos=true]{c} 
+typedef enum{PO, UT, ST, CT, PA, SO, NE} Den;
+Den den(short rok, char mesic, char den) {
+    if (...) 
+        return ST; ...
+}
+
+// vstupem je n-ty den roku 2012
+??? datum(short den) {
+    return ???
+}
+\end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Struktura} 
+    \begin{itemizex}
+        \item Pole nemůžeme použít kvůli různým typům: \texttt{char} $\times$ \texttt{short}.
+        \item Použijeme strukturu: 
+        \begin{minted}[linenos=true]{c} 
+typedef struct {
+   char Den, Mesic; 
+   short Rok;
+} Datum;
+        \end{minted}
+        \item Struktura je \uv{něco jako pole} -- jednotlivé buňky ale nemáme očíslované, ale pojmenované.
+        \item Každý člen může mít jiný typ.
+    \end{itemizex}
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{Rozdíl mezi polem a strukturou} 
+\begin{minted}[linenos=true]{c} 
+Datum dnes;                   short cisla[3];
+dnes.Den = 27;                cisla[0] = 27;
+dnes.Mesic = 11;              cisla[1] = 11;
+dnes.Rok = 2012;              cisla[2] = 2012;
+\end{minted}
+\vskip 5mm
+\begin{itemizex}
+    \item V poli máme třikrát \texttt{short}, ve struktuře dvakrát \texttt{char} a jednou \texttt{short}!
+\end{itemizex}
+
+\begin{center}
+    \begin{tabular}{c|c}
+        {\large dnes:}&{\large cisla:}\\\hline
+        \begin{tabular}{C{10mm}C{10mm}C{20mm}}
+            Den&Mesic&Rok\\
+            $\downarrow$&$\downarrow$&$\downarrow$
+        \end{tabular}
+        &
+        \begin{tabular}{C{10mm}C{10mm}C{10mm}}
+            0&1&2\\
+            $\downarrow$&$\downarrow$&$\downarrow$
+        \end{tabular}
+        \\
+        \begin{tabular}{|C{10mm}|C{10mm}|C{20mm}|}
+            \hline 27&11  &2012 \\\hline
+        \end{tabular}
+        &
+        \begin{tabular}{|C{10mm}|C{10mm}|C{10mm}|}
+            \hline 27&11  &2012 \\\hline
+        \end{tabular}
+        \\
+        \begin{tabular}{C{10mm}C{10mm}C{20mm}}
+            {\small \texttt{char}}&{\small \texttt{char}}&{\small \texttt{short}}
+        \end{tabular}
+        &
+        \begin{tabular}{C{10mm}C{10mm}C{10mm}}
+            {\small \texttt{short}}&{\small \texttt{short}}&{\small \texttt{short}}
+        \end{tabular}
+    \end{tabular}
+    
+\end{center}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Jak pracovat se strukturami} 
+\begin{minted}[linenos=true]{c} 
+typedef struct {
+   char Den, Mesic; 
+   short Rok;
+} Datum;
+
+int main() {
+    Datum narozen = {24, 3, 1972}; // zkraceny zapis
+    narozen.Rok = 1986;
+    narozen.Mesic = narozen.Mesic + 1;
+    narozen.Mesic++;
+    printf("Den narozeni: %i", narozen.Den);
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Zlomky} 
+\begin{minted}[linenos=true]{c} 
+typedef struct {
+    int citatel, jmenovatel;
+} Zlomek;
+void vytiskni_zlomek(Zlomek zlomek) {
+    printf("%i/%i", zlomek.citatel, zlomek.jmenovatel);
+}
+int main() {
+    Zlomek z1 = {2, 5}, z2 = {3, 7}, z3;
+    z3.citatel = 0;
+    z3.jmenovatel = 45;
+    vytiskni_zlomek(z1); // Vytiskne: 2/5
+    vytiskni_zlomek(z2); // Vytiskne: 3/7
+    vytiskni_zlomek(z3); // Vytiskne: 0/45
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Součin zlomků} 
+\begin{minted}[linenos=true]{c} 
+Zlomek soucin_zlomku(Zlomek z1, Zlomek z2) {
+    Zlomek novy_zlomek;
+    novy_zlomek.citatel = z1.citatel * z2.citatel;
+    novy_zlomek.jmenovatel = z1.jmenovatel * z2.jmenovatel;
+    return novy_zlomek;
+}
+
+int main() {
+    Zlomek z1 = {2, 5}, z2 = {3, 7}, z3;
+    z3.citatel = 0;
+    z3.jmenovatel = 45;
+    vytiskni_zlomek(soucin_zlomku(z1, z2)); // 6/35
+    vytiskni_zlomek(soucin_zlomku(z1, z3)); // 0/225
+    vytiskni_zlomek(soucin_zlomku(z2, z3)); // 0/315
+}
+\end{minted}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Struktura může obsahovat strukturu} 
+\begin{minted}[linenos=true]{c} 
+typedef struct {
+    Zlomek citatel_sl, jmenovatel_sl;
+} SlozenyZlomek;
+
+int main() {
+    Zlomek z1 = {2, 5}, z2 = {3, 7};
+    SlozenyZlomek slozeny = {z1, z2};
+    vytiskni_zlomek(slozeny.citatel_sl); // Vytiskne: 2/5
+    vytiskni_zlomek(slozeny.jmenovatel_sl); // Vytiskne: 3/7
+    printf("%i\n", slozeny.citatel_sl.jmenovatel); // 5
+    printf("%i\n", slozeny.jmenovatel_sl.citatel); // 3
+    slozeny.jmenovatel_sl.jmenovatel = 10;
+    vytiskni_zlomek(slozeny.jmenovatel_sl); // Vytiskne: 3/10
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Diagram struktury ve struktuře} 
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.85\textwidth]{slzlomek.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Úlohy}
+\begin{center}
+\vskip 1cm
+{\Large Seznam úloh je na \url{http://KMIup1.jdem.cz}}
+\vskip 2cm
+\url{http://tux.inf.upol.cz/~havrlant/}
+\end{center}
+\end{frame}
+
+
+\end{document}
