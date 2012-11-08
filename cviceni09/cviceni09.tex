@@ -1,0 +1,167 @@
+\documentclass{beamer}
+\usetheme[pageofpages=z,
+          bullet=circle,
+          titleline=true,
+          alternativetitlepage=true,
+          titlepagelogo=uplogo,
+          ]{UVT}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{czech}
+\usepackage{minted}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{graphicx}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+% \usepackage{url}
+\newcommand{\celllength}{2mm}
+
+\newenvironment{itemizex}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{8pt}%
+    \setlength{\parskip}{8pt}}%
+  {\end{itemize}}
+
+\newenvironment{enumeratex}%
+  {\large \begin{enumerate}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{enumerate}}
+
+
+\title{Základy programování 1 (KMI/ZP1 a KMI/UP1)}
+\subtitle{Cvičení 9: Ukazatele}
+\author{Lukáš Havrlant}
+\date{14. listopadu 2012}
+\institute{Univerzita Palackého}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Paměť počítače} 
+    \begin{figure}[htb]
+    \centering
+    \includegraphics{img/pamet1-2.pdf}
+    \end{figure}
+
+    \begin{minted}[linenos=true]{c} 
+char znak = '!';
+int cislo = 1073741824;
+    \end{minted}
+
+    \begin{figure}[htb]
+    \centering
+    \includegraphics{img/pamet2-2.pdf}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Adresa proměnné -- operátor reference} 
+\begin{minted}[linenos=true]{c} 
+char znak = '!';
+int cislo = 1073741824; 
+adresa = &cislo; // 43
+adresa = &znak;  // 41
+\end{minted}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.85]{img/pamet2-2.pdf}
+\end{figure}
+
+\begin{itemizex}
+    \item Ampersand \texttt{\&} je operátor \textit{reference}. Vrací \textit{adresu} proměnné.
+    \item \texttt{\&znak} vrací adresu, na které je uložena hodnota proměnné \texttt{znak}, tj. číslo $41$.
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Čtení hodnoty na dané adrese} 
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.75]{img/pamet3-2.pdf}
+\end{figure}
+
+\begin{itemize}
+    \item V proměnné \texttt{adresa} máme uloženou adresu jiné proměnné -- proměnné \texttt{znak}.
+    \item Jak přečíst hodnotu, která se nachází na adrese, kterou máme uloženou v proměnné \texttt{adresa}?
+    \item Pomocí operátoru \textit{dereference}: \texttt{*}
+    \item \texttt{*adresa} vrátí hodnotu buňky s adresou $41$, tj. \uv{!}
+    \item {\tiny Poznámka: adresa se běžně nevleze do jedné buňky, tj. do 1 B. Ale 4/8B adresa by se už nevešla na slajdy.}
+\end{itemize}
+% \begin{figure}[htb]
+%     \centering
+%     \includegraphics[scale=0.85]{img/pamet3-1.pdf}
+% \end{figure}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Čtení typu \texttt{int}} 
+\begin{minted}[linenos=true]{c} 
+int cislo = 1073741824; 
+adresa = &cislo;
+\end{minted}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.75]{img/pamet3-1.pdf}
+\end{figure}
+
+\begin{itemizex}
+    \item Na co by se mělo vyhodnotit \texttt{*adresa}?
+    \item Musíme zavést nový typ \uv{ukazatel na [typ]}. (Anglicky: pointer)
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Ukazatel na typ} 
+\begin{minted}[linenos=true]{c} 
+char znak = '!';
+int cislo = 1073741824;
+
+char *adresaz = &znak; // ukazatel na char
+int *adresac = &cislo; // ukazatel na int
+\end{minted}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.75]{img/pamet3-3.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Zápis hodnoty} 
+\begin{minted}[linenos=true]{c} 
+char znak = '!';
+int cislo = 1073741824;
+char *adresaz = &znak;
+int *adresac = &cislo;
+*adresac = 666;
+*adresaz = '?';
+printf("%c, %i\n", znak, cislo);
+\end{minted}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.75]{img/pamet3-4.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Úlohy}
+\begin{center}
+\vskip 1cm
+{\Large Seznam úloh je na \url{http://KMIup1.jdem.cz}}
+\vskip 2cm
+\url{http://tux.inf.upol.cz/~havrlant/}
+\end{center}
+\end{frame}
+
+
+\end{document}

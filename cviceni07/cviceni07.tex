@@ -10,6 +10,8 @@
 \usepackage{czech}
 \usepackage{minted}
 \usepackage{color}
+\usepackage{amssymb}
+
 % \usepackage{url}
 
 
@@ -146,6 +148,8 @@ x = !(0 &&);
 (or #f (= 5 0) 10 #f)
 (not 6)
 (not (and 0))
+(and)
+(or)
 \end{minted}
 \end{frame}
 
@@ -178,7 +182,7 @@ int main() {
     while (i < 5) {
         printf("%i, ", i);
         i++;
-    }
+    } // 0, 1, 2, 3, 4
 
     return 0;
 }
@@ -191,7 +195,7 @@ int main() {
 int main() {
     int i = 1, mocnina;
     while (i * i < 100) {
-        printf("Mocnina: %i", i * i);
+        printf("%i, ", i * i);
         i++;
     } // 1, 4, 9, 16, 25, 36, 49, 64, 81,
 
@@ -243,13 +247,13 @@ int main() {
 
 \begin{frame}[t,fragile]\frametitle{Co je to jednorozměrné pole}
 \begin{itemizex}
-    \item Je to tabulka s jedním řádkem a $x$ sloupci. 
-    \item Délka pole = $x$ = počet sloupců.
+    \item Je to tabulka s jedním řádkem a $x$ sloupci. Délka pole = $x$ = počet sloupců.
     \item Příklad: pole o délce 5:
     \item 
 \begin{tabular}{|c|c|c|c|c|}
 \hline 1& 2 & 4 & 8 &16 \\\hline
 \end{tabular}
+    \item Každá buňka obsahuje jeden prvek (jedno číslo).
     \item Prvky pole jsou očíslovány:
     \item 
 \begin{tabular}{|c|c|c|c|c|}
@@ -262,16 +266,6 @@ int main() {
 
 \end{frame}
 
-
-\begin{frame}[t,fragile]\frametitle{Pole jako matematická posloupnost} 
-\begin{itemizex}
-    \item Příklad posloupnosti: $a_i = i^2$
-    \item Tj. posloupnost $1, 4, 9, 16, 25, 36, \dots$
-    \item K prvkům přistupujeme pomocí indexu: $a_3$ je rovno 9. 
-    \item Proč? Třetí prvek posloupnosti. 
-    \item Zrada: pole jsou indexovány od nuly, posloupnosti od jedničky. 
-\end{itemizex}
-\end{frame}
 
 \begin{frame}[t,fragile]\frametitle{Jak přistupovat k prvkům pole} 
 \begin{minted}[linenos=true]{c} 
@@ -457,6 +451,28 @@ Případně jako číselné pole:\\
 \end{frame}
 
 
+\begin{frame}[t,fragile]\frametitle{Rozdíl mezi číselným polem a řetězcem} 
+\begin{itemizex}
+    \item U klasického číselného pole není v paměti žádná \uv{zarážka}
+    \item Pokud neznáme délku pole, nepoznáme, jestli $65$ patří k našemu poli nebo ne.
+    \item U řetězce zarážku máme.
+    \begin{minted}[linenos=true]{c} 
+int cisla[] = {3, 6, 9, 12, 15};
+char skupina[] = "Burzum";
+    \end{minted}
+\end{itemizex}
+\begin{center}
+cisla $\longrightarrow\,$\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 3& 6& 9& 12& 15 &18&-457&145&964&74&-4 \\\hline
+\end{tabular}
+\vskip 5mm
+skupina $\longrightarrow\,$\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 'B'&'u'&'r'&'z'&'u'&'m'&'\textbackslash0'&'x'&'y'&'!' \\\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+
 
 \begin{frame}[t,fragile]\frametitle{Jak procházet řetězec} 
 \begin{minted}[linenos=true]{c} 
@@ -466,34 +482,16 @@ int main() {
     char skupina[] = "Burzum";
 
     for (i = 0; i < delka; i++)
-        printf("%i,", cisla[i]);
-    // 2,6,7,0,9,
+        printf("%i, ", cisla[i]);
+    // 3, 6, 9, 12, 15
 
     for (i = 0; skupina[i] != '\0'; i++) 
-        printf("%c,", skupina[i]);
-    // B,u,r,z,u,m,
+        printf("%c, ", skupina[i]);
+    // B, u, r, z, u, m, 
 
     return 0;     
 }
 \end{minted}
-\end{frame}
-
-
-\begin{frame}[t,fragile]\frametitle{Rozdíl mezi číselným polem a řetězcem} 
-\begin{itemizex}
-    \item U klasického číselného pole není v paměti žádná \uv{zarážka}
-    \item Pokud neznáme délku pole, nepoznáme, jestli $65$ patří k našemu poli nebo ne.
-    \item U řetězce zarážku máme.
-\end{itemizex}
-\begin{center}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
-\hline 3& 6& 9& 12& 15 &65&-457&145&964&74&-4 \\\hline
-\end{tabular}
-\vskip 5mm
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
-\hline 'B'&'u'&'r'&'z'&'u'&'m'&'\textbackslash0'&475&565&7416 \\\hline
-\end{tabular}
-\end{center}
 \end{frame}
 
 
@@ -530,6 +528,22 @@ double prumer(int a, int b, int c) {
 }
     \end{minted}
 \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Souvislosti s matematikou} 
+    \begin{itemize}
+        \item Funkce $\sin$ je zobrazení ${\color{red}\mathbb{R}}\longrightarrow{\color{blue}\mathbb{R}}$. Nebo relace mezi ${\color{red}\mathbb{R}}$ a ${\color{blue}\mathbb{R}}$. 
+        % \item Funkce \texttt{delka_retezce} je zobrazení ${\color{red}\mathbb{R}}\longrightarrow{\color{blue}\mathbb{R}}$. Případně relace mezi ${\color{red}\mathbb{R}}$ a ${\color{blue}\mathbb{R}}$.
+        \item {\color{red} Definiční obor} $\longrightarrow$ {\color{blue} Kodefiniční obor}, $\sin ({\color{red}x}) = {\color{blue}y}$. 
+        \item {\tiny Pozn.: \uv{Kodefiniční obor} se v češtině nepoužívá, je to z anglického \uv{codomain}.}
+        \item {\color{blue} Obor hodnot} = podmnožina kodefiničního oboru: $R(\sin)=\left<-1, 1\right>$
+        \item Tedy platí: $\sin({\color{red}\pi}) = {\color{blue}0}$, případně $\left<{\color{red}\pi}, {\color{blue}0}\right>\in\sin$.
+        \item \texttt{{\color{blue}double} sin({\color{red}double x}) \{ ... \}}
+        \item Vstupem funkce je prvek z definičního oboru, výstupem je prvek z kodefiničního oboru (přesněji z oboru hodnot).
+        \item Výstupem funkce je vždy jedna hodnota: Kolik je $\sqrt{9}$?
+        \item \uv{Matematická funkce} vždy vrací pro stejné parametry stejný výsledek. Funkce v C nemusí (globální proměnné, soubory)
+    \end{itemize}
 \end{frame}
 
 
