@@ -15,6 +15,18 @@
 \usepackage{graphicx}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
+  \newenvironment{itemize4}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{4pt}%
+    \setlength{\parskip}{4pt}}%
+  {\end{itemize}}
+
+\newenvironment{itemizey}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{itemize}}
+
 % \usepackage{url}
 \newcommand{\celllength}{2mm}
 
@@ -138,18 +150,122 @@ int *adresac = &cislo; // ukazatel na int
 
 \begin{frame}[t,fragile]\frametitle{Zápis hodnoty} 
 \begin{minted}[linenos=true]{c} 
-char znak = '!';
-int cislo = 1073741824;
-char *adresaz = &znak;
-int *adresac = &cislo;
-*adresac = 666;
+char *adresaz; 
+adresaz = &znak;
 *adresaz = '?';
+
+int *adresac; 
+adresac = &cislo;
+*adresac = 666;
 printf("%c, %i\n", znak, cislo);
 \end{minted}
 
 \begin{figure}[htb]
     \centering
     \includegraphics[scale=0.75]{img/pamet3-4.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Práce s ukazatelem} 
+\begin{itemizex}
+    \item Pokud máme ukazatel \texttt{*uk} na proměnnou \texttt{cislo} typu \texttt{int}, tak \texttt{*uk} můžeme používat v jakémkoliv kontextu, ve kterém se může objevit \texttt{cislo}.
+\begin{minted}[linenos=true]{c} 
+int cislo = 10;
+int *uk; 
+uk = &cislo;
+printf("%i\n", cislo + 5 + *uk); // 25
+printf("%i\n", *uk * 5); // 50
+(*uk)++;
+printf("%i, %i\n", *uk, cislo); // 11, 11
+\end{minted}
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Předávání hodnotou} 
+    \begin{itemizey}
+        \item Pokud předáváme funkci nějaké argumenty, předávají se hodnotou.
+        \item Tj. hodnoty z argumentů se nakopírují do nových proměnných, které odpovídají parametrům funkce.
+        \item Funkce tam nemůže změnit původní proměnné. 
+    \end{itemizey}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Funkce na prohození hodnoty proměnných} 
+    \begin{minted}[linenos=true]{c} 
+void vymen(char a, char b) {
+    char temp = a;
+    a = b;
+    b = temp;
+}
+
+int main() {
+    char delka = 10, vyska = 20;
+    vymen(delka, vyska);
+}
+    \end{minted}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.75]{img/pamet4-1.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Funkční funkce na prohození proměnných} 
+\begin{minted}[linenos=true]{c} 
+void vymen(char *b, char *a) {
+    char temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main() {
+    char delka = 10, vyska = 20;
+    vymen(&delka, &vyska);
+}
+\end{minted}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.75]{img/pamet4-2.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Jak pracovat s ukazatelem} 
+\begin{minted}[linenos=true]{c} 
+char vek = 25;    
+char *uk_vek, *uk_auto; // prvni obrazek
+uk_vek = &vek; // *uk_vak = 40; -> vek = 40
+*uk_auto = 69; // druhy obrazek
+\end{minted}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.75]{img/pamet5-1.pdf}
+\end{figure}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.75]{img/pamet5-2.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Ukazatele a pole} 
+    \begin{itemizex}
+        \item Více méně platí pole = ukazatel.
+        \item Pokud definujeme pole \texttt{int p[10]}, bude proměnná \texttt{p} ukazatelem na první prvek pole.
+    \end{itemizex}
+
+\begin{minted}[linenos=true]{c} 
+int p[] = {2, 4, 8, 16, 32};
+\end{minted}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.75]{img/pamet6-1.pdf}
 \end{figure}
 \end{frame}
 
