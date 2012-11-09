@@ -257,16 +257,65 @@ uk_vek = &vek; // *uk_vak = 40; -> vek = 40
 \begin{frame}[t,fragile]\frametitle{Ukazatele a pole} 
     \begin{itemizex}
         \item Více méně platí pole = ukazatel.
-        \item Pokud definujeme pole \texttt{int p[10]}, bude proměnná \texttt{p} ukazatelem na první prvek pole.
     \end{itemizex}
 
 \begin{minted}[linenos=true]{c} 
-int p[] = {2, 4, 8, 16, 32};
+char p[] = {2, 4, 8, 16, 32};
+char *st;
+st = &p[0];
+printf("%i, %i\n", p[2], *(st+2)); // 8, 8
 \end{minted}
 \begin{figure}[htb]
     \centering
     \includegraphics[scale=0.75]{img/pamet6-1.pdf}
 \end{figure}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Aritmetika ukazatelů} 
+    \begin{itemizex}
+        \item Adresa je obyčejné číslo, takže s ním můžeme (skoro) normálně počítat.
+        \item K adrese můžeme přičítat/odečítat jiné hodnoty.
+        \item Důležitý je typ ukazatele. Jinak se počítá se ukazatelem na \texttt{char} než na \texttt{short} atp. 
+        \item Pokud napíšeme \texttt{ukazatel+1}, chceme tím získat adresu, kde se nachází další proměnná se stejným typem.
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Aritmetika ukazatelů podruhé} 
+\begin{minted}[linenos=true]{c} 
+char p[] = {2, 4, 8};
+short c[] = {500, 600};
+char *ukp;      short *ukc;
+ukp = &p[0];    ukc = &c[0];
+printf("%i, %i\n", *(ukp+1), *(ukc+1)); // 4, 600
+// Jakoby udelal: ukc+(1*velikost_short)
+\end{minted}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.75]{img/pamet7-1.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{Pole jako ukazatel} 
+    \begin{itemizex}
+        \item Pokud chceme předat funkci jako argument pole, předáme ve skutečnosti ukazatel na první prvek.
+        \item Tato volání funkce \texttt{obrat\_pole} by byla identická:
+\begin{minted}[linenos=true]{c} 
+int pole = {2, 5, 12, 18};
+obrat_pole(pole, 4);
+obrat_pole(&pole[0], 4);
+\end{minted}
+    \item Uvnitř funkce \texttt{obrat\_pole} už tak vidíme jen ukazatel na první prvek pole.
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Ukazatel jako pole} 
+    \begin{itemizex}
+        \item Uvnitř funkce
+    \end{itemizex}
 \end{frame}
 
 

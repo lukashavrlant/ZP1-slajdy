@@ -14,7 +14,9 @@ beginfig(1);
 
      % Vertikalni cary
      for i=0 upto 10:
-        draw (i*u, 0+basetable)--(i*u, u+basetable);
+        if (i <> 4) and (i <> 6):
+            draw (i*u, 0+basetable)--(i*u, u+basetable);
+        fi;
      endfor;
 
      % Horizontalni cary
@@ -31,28 +33,30 @@ beginfig(1);
      label.bot("p[0]", (0*u + 0.5u, 0.5u));
      label.bot("p[1]", (1*u + 0.5u, 0.5u));
      label.bot("p[2]", (2*u + 0.5u, 0.5u));
-     label.bot("p[3]", (3*u + 0.5u, 0.5u));
-     label.bot("p[4]", (4*u + 0.5u, 0.5u));
-     label.bot("st", (7*u + 0.5u, 0.5u));
-     label.bot("74=st+2", (7*u + 0.5u, 3.5u));
+     label.bot("c[0]", (3*u + 0.5u, 0.5u));
+     label.bot("c[1]", (5*u + 0.5u, 0.5u));
+     label.bot("ukp", (8*u + 0.5u, 0.5u));
+     label.bot("ukc", (9*u + 0.5u, 0.5u));
 
      label.top("2", (0*u + 0.5u, basetable+0.25u));
      label.top("4", (1*u + 0.5u, basetable+0.25u));
      label.top("8", (2*u + 0.5u, basetable+0.25u));
-     label.top("16", (3*u + 0.5u, basetable+0.25u));
-     label.top("32", (4*u + 0.5u, basetable+0.25u));
-     label.top("72", (7*u + 0.5u, basetable+0.25u));
+     label.top("500", (3.5*u + 0.5u, basetable+0.25u));
+     label.top("600", (5.5*u + 0.5u, basetable+0.25u));
+     label.top("72", (8*u + 0.5u, basetable+0.25u));
+     label.top("75", (9*u + 0.5u, basetable+0.25u));
 
 
     arrow (0*u + 0.5u, 0.5u)--(0*u + 0.5u, basetable - 0.1u);
     arrow (1*u + 0.5u, 0.5u)--(1*u + 0.5u, basetable - 0.1u);
     arrow (2*u + 0.5u, 0.5u)--(2*u + 0.5u, basetable - 0.1u);
     arrow (3*u + 0.5u, 0.5u)--(3*u + 0.5u, basetable - 0.1u);
-    arrow (4*u + 0.5u, 0.5u)--(4*u + 0.5u, basetable - 0.1u);
-    arrow (7*u + 0.5u, 0.5u)--(7*u + 0.5u, basetable - 0.1u);
-    
+    arrow (3*u + 0.5u, 0.5u)--(3*u + 0.5u, basetable - 0.1u);
+    arrow (5*u + 0.5u, 0.5u)--(5*u + 0.5u, basetable - 0.1u);
+    arrow (8*u + 0.5u, 0.5u)--(8*u + 0.5u, basetable - 0.1u);
+    arrow (9*u + 0.5u, 0.5u)--(9*u + 0.5u, basetable - 0.1u);
 
-    arrow (7*u + 0.5u, basetable+0.8u){dir -225}..{dir -135}(0.5*u, basetable+0.8u);
-    arrow (6.7*u, 3.2u)--(2.5*u, basetable+0.8u);
+    draw (3u, 2.5u) withcolor white;
+    
 endfig;
 end;
