@@ -138,8 +138,11 @@ adresa = &cislo;
 char znak = '!';
 int cislo = 1073741824;
 
-char *adresaz = &znak; // ukazatel na char
-int *adresac = &cislo; // ukazatel na int
+char *adresaz; // ukazatel na char
+int *adresac; // ukazatel na int
+
+adresaz = &znak;
+adresac = &cislo;
 \end{minted}
 \begin{figure}[htb]
     \centering
@@ -167,9 +170,26 @@ printf("%c, %i\n", znak, cislo);
 \end{frame}
 
 
-\begin{frame}[t,fragile]\frametitle{Práce s ukazatelem} 
+
+\begin{frame}[t,fragile]\frametitle{Zápis hodnoty podruhé} 
 \begin{itemizex}
-    \item Pokud máme ukazatel \texttt{*uk} na proměnnou \texttt{cislo} typu \texttt{int}, tak \texttt{*uk} můžeme používat v jakémkoliv kontextu, ve kterém se může objevit \texttt{cislo}.
+    \item Pokud neinicializujeme adrese ukazatele, může dojít k segmentation fault.
+\end{itemizex}
+\begin{minted}[linenos=true]{c} 
+char *adresa;
+*adresa = 10;
+\end{minted}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.75]{img/pamet8-1.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Použití ukazatele} 
+\begin{itemizex}
+    \item Pokud máme ukazatel \texttt{*uk} na proměnnou \texttt{cislo}, tak \texttt{*uk} můžeme používat v jakémkoliv kontextu, ve kterém se může objevit \texttt{cislo}.
 \begin{minted}[linenos=true]{c} 
 int cislo = 10;
 int *uk; 
@@ -192,7 +212,7 @@ printf("%i, %i\n", *uk, cislo); // 11, 11
 \end{frame}
 
 
-\begin{frame}[t,fragile]\frametitle{Funkce na prohození hodnoty proměnných} 
+\begin{frame}[t,fragile]\frametitle{Nefunkční funkce na prohození proměnných} 
     \begin{minted}[linenos=true]{c} 
 void vymen(char a, char b) {
     char temp = a;
@@ -215,7 +235,7 @@ int main() {
 
 \begin{frame}[t,fragile]\frametitle{Funkční funkce na prohození proměnných} 
 \begin{minted}[linenos=true]{c} 
-void vymen(char *b, char *a) {
+void vymen(char *a, char *b) {
     char temp = *a;
     *a = *b;
     *b = temp;
@@ -234,42 +254,25 @@ int main() {
 \end{frame}
 
 
-\begin{frame}[t,fragile]\frametitle{Jak pracovat s ukazatelem} 
-\begin{minted}[linenos=true]{c} 
-char vek = 25;    
-char *uk_vek, *uk_auto; // prvni obrazek
-uk_vek = &vek; // *uk_vak = 40; -> vek = 40
-*uk_auto = 69; // druhy obrazek
-\end{minted}
+% \begin{frame}[t,fragile]\frametitle{Jak pracovat s ukazatelem} 
+% \begin{minted}[linenos=true]{c} 
+% char vek = 25;    
+% char *uk_vek, *uk_auto; // prvni obrazek
+% uk_vek = &vek; // *uk_vek = 40; -> vek = 40
+% *uk_auto = 69; // druhy obrazek
+% \end{minted}
 
-\begin{figure}[htb]
-    \centering
-    \includegraphics[scale=0.75]{img/pamet5-1.pdf}
-\end{figure}
+% \begin{figure}[htb]
+%     \centering
+%     \includegraphics[scale=0.75]{img/pamet5-1.pdf}
+% \end{figure}
 
-\begin{figure}[htb]
-    \centering
-    \includegraphics[scale=0.75]{img/pamet5-2.pdf}
-\end{figure}
-\end{frame}
+% \begin{figure}[htb]
+%     \centering
+%     \includegraphics[scale=0.75]{img/pamet5-2.pdf}
+% \end{figure}
+% \end{frame}
 
-
-\begin{frame}[t,fragile]\frametitle{Ukazatele a pole} 
-    \begin{itemizex}
-        \item Více méně platí pole = ukazatel.
-    \end{itemizex}
-
-\begin{minted}[linenos=true]{c} 
-char p[] = {2, 4, 8, 16, 32};
-char *st;
-st = &p[0];
-printf("%i, %i\n", p[2], *(st+2)); // 8, 8
-\end{minted}
-\begin{figure}[htb]
-    \centering
-    \includegraphics[scale=0.75]{img/pamet6-1.pdf}
-\end{figure}
-\end{frame}
 
 
 \begin{frame}[t,fragile]\frametitle{Aritmetika ukazatelů} 
@@ -282,19 +285,39 @@ printf("%i, %i\n", p[2], *(st+2)); // 8, 8
 \end{frame}
 
 
-\begin{frame}[t,fragile]\frametitle{Aritmetika ukazatelů podruhé} 
+
+\begin{frame}[t,fragile]\frametitle{Aritmetika ukazatelů: příklad} 
 \begin{minted}[linenos=true]{c} 
 char p[] = {2, 4, 8};
 short c[] = {500, 600};
-char *ukp;      short *ukc;
-ukp = &p[0];    ukc = &c[0];
-printf("%i, %i\n", *(ukp+1), *(ukc+1)); // 4, 600
+char *ukp = &p[0];
+short *ukc = &c[0];
+printf("%i\n", *(ukp+1)); // 4
+printf("%i\n", *(ukc+1)); // 600
 // Jakoby udelal: ukc+(1*velikost_short)
 \end{minted}
 
 \begin{figure}[htb]
     \centering
     \includegraphics[scale=0.75]{img/pamet7-1.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{Ukazatele a pole} 
+    \begin{itemizex}
+        \item Více méně platí pole = ukazatel.
+        \item Identifikátor pole se chová jako konstantní ukazatel na první prvek pole.
+    \end{itemizex}
+
+\begin{minted}[linenos=true]{c} 
+char p[] = {2, 4, 8, 16, 32};
+char *st = p;
+printf("%i, %i\n", p[2], *(st+2)); // 8, 8
+// p[i] je ekvivalentni *(st+i)
+\end{minted}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.75]{img/pamet6-1.pdf}
 \end{figure}
 \end{frame}
 
@@ -314,8 +337,110 @@ obrat_pole(&pole[0], 4);
 
 \begin{frame}[t,fragile]\frametitle{Ukazatel jako pole} 
     \begin{itemizex}
-        \item Uvnitř funkce
+        \item Uvnitř funkce vidíme místo pole ukazatel na první prvek.
+        \item S tímto ukazatelem ale můžeme pracovat jako s polem.
+        \begin{minted}[linenos=true]{c} 
+void funkce(int *pole) {
+    printf("%i, %i\n", pole[1], *(pole + 1));
+}
+
+int main() {
+    int pole[] = {3, 6, 9};
+    funkce(pole);       // 6, 6
+    funkce(&pole[0]);   // 6, 6
+}
+        \end{minted}
     \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Jak předat část pole} 
+\begin{itemizex}
+    \item Pokud předáme funkci ukazatel na druhý prvek pole, tak volaná funkce bude brát tento druhý prvek jako svůj první.
+\end{itemizex}
+
+\begin{minted}[linenos=true]{c} 
+int pole[] = {0, 3, 6, 9, 12, 15}, delka = 6;
+obrat_pole(pole, delka);
+vypis_pole(pole, delka); // 15 12 9 6 3 0
+obrat_pole(&pole[2], 4);
+vypis_pole(pole, delka); // 15 12 0 3 6 9 
+\end{minted}
+
+\begin{itemizex}
+    \item Předali jsme funkci ukazatel na druhý prvek.
+    \item Funkce tak \uv{viděla} jen část pole: \texttt{\{9, 6, 3, 0\}}.
+\end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Jak vracet část pole} 
+    \begin{itemizex}
+        \item Pole můžeme vrátit tak, že vrátíme ukazatel na nultý prvek.
+        \item Pokud vrátíme ukazatel na $i$-tý prvek, pole \uv{ořežeme}.
+    \end{itemizex}
+
+    \begin{minted}[linenos=true]{c} 
+int *orez_pole(int *pole, int kolik) {
+  return &pole[kolik];
+}
+
+int main() {
+  int pole[] = {0, 3, 6, 9, 12, 15}, delka = 6;
+  vypis_pole(orez_pole(pole, 2), delka - 2); // 6 9 12 15 
+  vypis_pole(pole, delka);                 // 0 3 6 9 12 15 
+  vypis_pole(orez_pole(pole, 5), delka - 5); // 15 
+}
+    \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Nulová adresa} 
+    \begin{itemizex}
+        \item Nulová adresa je vždy neplatná.
+        \item Používáme konstantu \texttt{NULL}.
+        \item Můžeme ji použít pro signalizaci toho, že ukazatel \uv{nikam neodkazuje}.
+    \end{itemizex}
+
+\begin{minted}[linenos=true]{c} 
+int *ukazatel;
+ukazatel = 0; 
+ukazazel = NULL; // lepsi
+if (ukazatel) {
+    // splneno pri nenulove adrese
+}
+\end{minted}
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{Rozděl pole} 
+\begin{minted}[linenos=true]{c} 
+int *rozdel_pole(int *pole, int delka, int oddelovac) {
+    int i;
+    for (i = 0; i < delka; i++)
+        if (pole[i] == oddelovac)
+            return &pole[i];
+    return NULL;
+}
+
+int main() {
+    int pole[] = {0, 3, 6, 9, 12, 15}, delka = 6;
+    int *pole1 = rozdel_pole(pole, delka, 9); // {9, 12, 15}
+    int *pole2 = rozdel_pole(pole, delka, 12); // {12, 15}
+    int *pole3 = rozdel_pole(pole, delka, 5); // NULL
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Shrnutí} 
+    \begin{itemize4}
+        \item Operátor refenrence \texttt{\&} vrací adresu proměnné.
+        \item Operátor dereference \texttt{*} zjistí hodnotu proměnné na dané adrese. 
+        \item Pokud deklarujeme nový ukazatel pomocí \texttt{int *ukaz;}, musíme do něj později uložit adresu, na kterou má ukazovat.
+        \item Pokud má funkce vracet ukazatel, přidáme před název hvězdičku: \texttt{int vrat\_ukazatel() \{...\}}
+        \item Identifikátor pole slouží zároveň jako ukazatel na první prvek pole. 
+        \item Ukazatel můžeme indexovat stejně jako pole: \texttt{*(pole+3)} a \texttt{pole[3]} je stejné. \texttt{*(ukaz+3)} a \texttt{ukaz[3]} také. 
+    \end{itemize4}
 \end{frame}
 
 
