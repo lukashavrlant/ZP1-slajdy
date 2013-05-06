@@ -1,0 +1,406 @@
+\documentclass{beamer}
+\usetheme[pageofpages=z,
+          bullet=circle,
+          titleline=true,
+          alternativetitlepage=true,
+          titlepagelogo=uplogo,
+          ]{UVT}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{czech}
+\usepackage{minted}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{graphicx}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+  \newenvironment{itemize4}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{4pt}%
+    \setlength{\parskip}{4pt}}%
+  {\end{itemize}}
+
+\newenvironment{itemizey}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{itemize}}
+
+% \usepackage{url}
+\newcommand{\celllength}{2mm}
+
+\newenvironment{itemizex}%
+  {\large \begin{itemize}%
+    \setlength{\itemsep}{8pt}%
+    \setlength{\parskip}{8pt}}%
+  {\end{itemize}}
+
+\newenvironment{enumeratex}%
+  {\large \begin{enumerate}%
+    \setlength{\itemsep}{6pt}%
+    \setlength{\parskip}{6pt}}%
+  {\end{enumerate}}
+
+
+\title{Základy programování 1 (KMI/ZP1 a KMI/UP1)}
+\subtitle{Cvičení 10: Dynamická alokace paměti}
+\author{Lukáš Havrlant}
+\date{21. listopadu 2012}
+\institute{Univerzita Palackého}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Ukazatel: opakování} 
+    \begin{itemizex}
+        \item Ukazatel = proměnná, která uchovává adresu.
+        % \item Ukazatel musí mít určen svůj typ, tj. musíme vědět, na co ukazujeme.
+        \item Jako první musíme do ukazatele uložit adresu.
+    \end{itemizex}
+
+    \begin{minted}[linenos=true]{c}
+void inkrementuj(int* x) {
+    (*x)++;
+}
+int main() {
+    int cislo = 10;
+    int* uk = &cislo;
+    inkrementuj(uk);
+    printf("%i", cislo); // 11
+}    
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Odkaz na strukturu} 
+    \begin{itemizex}
+        \item Můžeme vytvořit i odkaz na strukturu:
+        \begin{minted}[linenos=true]{c} 
+typedef struct {
+    int citatel, jmenovatel;
+} Zlomek;
+        \end{minted}
+        \item Po vytvoření struktury můžeme vytvořit i ukazatel na ni:
+        \begin{minted}[linenos=true]{c} 
+Zlomek polovina = {1, 2};
+Zlomek* ukpol = &polovina;
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Člen struktury} 
+    \begin{itemizex}
+        \item Pokud máme ukazatel na strukturu, ke členům se dostaneme klasicky přes hvězdičku:
+        \begin{minted}[linenos=true]{c} 
+Zlomek polovina = {1, 2};
+Zlomek* ukpol = &polovina;
+(*ukpol).citatel = 0;
+(*ukpol).jmenovatel = -8;
+        \end{minted}
+        \item Můžeme využít zkratku a místo \texttt{(*ukpol).citatel} psát \texttt{ukpol->citatel}
+        \begin{minted}[linenos=true]{c} 
+ukpol->citatel = 0;
+ukpol->jmenovatel = -8;
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Struktura obsahující sebe samu} 
+    \begin{itemize}
+        \item Pokud definujeme členy struktury, nemůžeme jako jeden z členů zvolit tutéž strukturu:
+        \begin{minted}[linenos=true]{c} 
+typedef struct {
+    int hodnota;
+    struct Seznam dalsi; // Toto nejde
+} Seznam;
+        \end{minted}
+        \item Obejdeme to ukazatelem na strukturu:
+        \begin{minted}[linenos=true]{c} 
+typedef struct szn {
+    int hodnota;
+    struct szn* dalsi; // Toto jde
+} Seznam;
+        \end{minted}
+        \item Typ \texttt{szn} používáme jen uvnitř struktury. Všude jinde pak používáme typ \texttt{Seznam}.
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[t,fragile]\frametitle{Lokální proměnné funkce} 
+    \begin{itemize}
+        \item Po ukončení funkce zanikají všechny lokální proměnné v dané funkci.
+        \item Nemůžeme vrátit ukazatel na lokální proměnnou funkce!
+        \begin{minted}[linenos=true]{c} 
+int* funkce(int a, int b) {
+    int c = a + b;
+    int pole[] = {a, b};
+    double d = (double)a / b;
+    return &c;    // NEJDE!!!
+    return &a;    // NEJDE!!!
+    return pole;  // NEJDE!!!
+}
+        \end{minted}
+        \item Na pátém řádku funkce končí a všechny proměnné \texttt{a}, \texttt{b}, \texttt{c}, \texttt{pole}, \texttt{d} zanikají.
+    \end{itemize}
+\end{frame}
+
+
+% \begin{frame}[t,fragile]\frametitle{Ukazatel na lokální proměnnou funkce} 
+%     \begin{itemizex}
+%         \item Nemůžeme vrátit ukazatel na lokální proměnnou funkce!
+%         \begin{minted}[linenos=true]{c} 
+
+%         \end{minted}
+%         \item Všechny proměnné zanikají, takže vracíme ukazatel, který ukazuje na proměnnou, která zanikla.
+%     \end{itemizex}
+% \end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Operátor \texttt{sizeof}} 
+    \begin{itemizex}
+        \item Operátor \texttt{sizeof(typ)} vrací velikost typu v bajtech.
+        \item Návratová hodnota je typu \texttt{size\_t}, celočíselný neznaménkový typ. Modifikátor v \texttt{printf} je \texttt{\%zu}
+        \begin{minted}[linenos=true]{c} 
+int cislo = 17;
+printf("%zu\n", sizeof(char));   // 1
+printf("%zu\n", sizeof(short));  // 2
+printf("%zu\n", sizeof(int));    // 4
+printf("%zu\n", sizeof(Zlomek)); // 8
+printf("%zu\n", sizeof(int*));   // 8
+printf("%zu\n", sizeof(char*));  // 8
+printf("%zu\n", sizeof(cislo));  // 4
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Ukazatel na \texttt{void}} 
+    \begin{itemizex}
+        \item Beztypový ukazatel: \texttt{void*}
+        \item Takový ukazatel může ukazovat na libovolný typ.
+        \item Ale nemůžeme ho dereferencovat. 
+        \begin{minted}[linenos=true]{c} 
+int cislo = 5;
+void* ukaz = &cislo;
+*ukaz = 7; // NEJDE!!!
+*((int*)ukaz) = 7;
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Dynamické alokování paměti} 
+    \begin{itemizex}
+        \item Funkce \texttt{malloc} slouží k dynamickému alokování paměti.
+        \item Má jeden parametr -- počet bajtů, které má alokovat.
+        \item \texttt{malloc} vrací ukazatel na kus alokované paměti. Pokud alokace selže, vrací \texttt{NULL}. Ukazatel je typu \texttt{void*}, takže bychom ho měli přetypovat:
+            \begin{minted}[linenos=true]{c} 
+int* pole;
+pole = malloc(40); // NEPOUZIVAME! Alokuje 40 bajtu
+pole = malloc(10 * sizeof(int)); // Spravne
+pole = (int*) malloc(10 * sizeof(int)); // Lepsi
+pole[0] = 10;
+pole[9] = 42;
+            \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Dynamicky alokované pole můžeme vracet z funkce} 
+    \begin{itemizex}
+        \item Funkce \texttt{map2}, která bere pole, zdvojnásobí každý prvek a vrátí nové pole.
+    \end{itemizex}
+
+    \begin{minted}[linenos=true]{c} 
+int* map2(int* pole, int delka) {
+    int i;
+    int* nove_pole = (int*)malloc(sizeof(int) * delka);
+    // int nove_pole[delka]; -> toto by nefugovalo!!!
+    for (i = 0; i < delka; i++) {
+        nove_pole[i] = pole[i] * 2;
+    }
+    return nove_pole;
+}
+    \end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Dynamicky alokovanou strukturu taky\dots} 
+\begin{minted}[linenos=true]{c} 
+Zlomek* vytvor_zlomek(int cit, int jm) {
+    // Zlomek zlomek = {cit, jm}; 
+    // return &zlomek; // NEJDE!!!
+    Zlomek* zlomek = (Zlomek*)malloc(sizeof(Zlomek));
+    zlomek->citatel = cit;
+    zlomek->jmenovatel = jm;
+    return zlomek;
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Alokace paměti pro řetězec} 
+    \begin{itemizex}
+        \item Pokud například chceme nakopírovat řetězec \texttt{"ahoj"} do jiné proměnné, musíme alokovat místo pro 5 znaků!
+        \item \texttt{"ahoj"} = \texttt{\{'a', 'h', 'o', 'j', '\textbackslash0'\}}
+        \item Když chceme spojit řetězce \texttt{"xy"} a \texttt{"123"} do jednoho, musíme alokovat místo pro 6 znaků.
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Další funkce} 
+    \begin{itemizex}
+        \item Funkce \texttt{void *calloc(size\_t items, size\_t size)} alokuje paměť pro items prvků o velikosti size (tedy items*size bytů), navíc tuto paměť vyplní nulami.
+        \item Funkce \texttt{void *realloc(void* old, size\_t size)} zajišťující změnu velikosti dříve alokovaného bloku paměti old na velikost size. Data původního bloku paměti budou zkopírována do nově alokovaného.
+        \item Všechny zmiňované funkce jsou v knihovně \texttt{stdlib.h}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Uvolnění paměti} 
+    \begin{itemizex}
+        \item Pokud už nepotřebujeme část paměti, měli bychom ji uvolnit.
+        \item K tomu slouží funkce \texttt{free}.
+        \begin{minted}[linenos=true]{c} 
+int* cisla = (int*) calloc(5, sizeof(int));
+// udelej neco s polem "cisla"
+//OK, pole cisla uz nepotrebujeme
+free(cisla);
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Memory leak} 
+    \begin{itemizex}
+        \item Pokud alokujeme paměť pomocí \texttt{malloc}/\texttt{calloc}, měli bychom tuto paměť uvolnit pomocí \texttt{free}.
+        \item \dots jinak se paměť uvolní až při skončení celého programu.
+        \begin{minted}[linenos=true]{c} 
+void vytvor_memory_leak(int a) {
+    char* pole = (char*) malloc(a * sizeof(char));
+}
+
+int main() {
+    // Vytvor memory leak o velikost 1 MiB
+    vytvor_memory_leak(1024 * 1024);
+    jina_funkce();
+}
+        \end{minted}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Zásobník} 
+    \begin{itemizex}
+        \item Má tři základní funkce: \texttt{pridej} pro přidání prvku do zásobníku, \texttt{vrchol}, který vrací prvek na vrcholu zásobníku a \texttt{odeber}, který odebere prvek z vrcholu.
+        \begin{figure}[htb]
+            \centering
+            \includegraphics[scale=0.7]{img/zasobnik.pdf}
+        \end{figure}
+        \item {\tiny Zdroj: A. Večerka, Základní algoritmy}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{K čemu je to dobré} 
+    \begin{itemizey}
+        \item Jak zjistit, zda ve výrazu \uv{sedí} závorky?
+        \item Pokud narazíme na otevírací závorku, přidáme ji na zásobník. Pokud narazíme na uzavírací závorku, odebereme z vrcholu zásobníku otevírací závorku a ta musí odpovídat.
+        \item Příklad pro řetězec \texttt{(a+[b*(c+2)]*3)}:
+\begin{verbatim}
+prazdny     // pridame (
+(           // pridame [
+([          // pridame (
+([(         // ( sedi s ) -> odebereme (
+([          // [ sedi s ] -> odebereme [
+(           // ( sedi s ) -> odebereme (
+prazdny     // zas. je prazdy, zavorky jsou OK
+\end{verbatim}
+    \end{itemizey}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Závorky znova} 
+    \begin{itemizex}
+        \item Co třeba řetězec \texttt{(x+[5*(x-4]))}?
+        \begin{verbatim}
+prazdny     // pridame (
+(           // pridame [
+([          // pridame (
+([(         // ] nesedi s ( -> zavorky nesedi
+        \end{verbatim}
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Jak to naprogramovat?} 
+    \begin{itemizex}
+        \item Pomocí pole: dělali jste v algmatu.
+        \item Pomocí spojového seznamu: máte za úkol.
+        \item Princip: definujeme strukturu s členy: \texttt{hodnota} (tam bychom např. ukládali závorky) a \texttt{predchozi} (ukazatel na předchozí prvek / na předchozí strukturu).
+    \end{itemizex}
+\end{frame}
+
+\begin{frame}[t,fragile]\frametitle{Přidání prvku: přidáme 5 a pak 7} 
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.9]{img/zas-1.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Odebrání prvku} 
+\begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.9]{img/zas-2.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Definice struktury a přidání prvku} 
+\begin{minted}[linenos=true]{c} 
+typedef struct Zasob {
+    int hodnota;
+    struct Zasob* predchozi;
+} prvek;
+
+int main() {
+    prvek* vrchol = NULL;
+    prvek* pet = (prvek*) malloc(sizeof(prvek));
+    pet->hodnota = 5;
+    pet->predchozi = NULL;
+    vrchol = pet;
+    printf("hodnota na vrcholu:%i\n", vrchol->hodnota); //5
+}
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[t,fragile]\frametitle{Obecný postup} 
+    \begin{itemizex}
+        \item Funkce \texttt{pridej} musí vytvořit novou strukturu, uložit do ní předanou hodnotu, uložit do členu \texttt{predchozi} odkaz na strukturu, která je aktuálně na vrcholu zásobníku a vrátit odkaz na nově vytvořenou strukturu.
+        \item Funkce \texttt{odeber} musí zrušit strukturu, která je vrcholu a vrátit odkaz na předchozí strukturu.
+        \item Funkce \texttt{vrchol} jen vrátí hodnotu ze struktury, která je na vrcholu.
+    \end{itemizex}
+\end{frame}
+
+
+\begin{frame}[t,fragile]{Úlohy}
+\begin{center}
+\vskip 1cm
+{\Large Seznam úloh je na \url{http://KMIup1.jdem.cz}}
+\vskip 2cm
+\url{http://tux.inf.upol.cz/~havrlant/}
+\end{center}
+\end{frame}
+
+
+\end{document}

@@ -9,6 +9,8 @@ setup_cmarrows(
 beginfig(2);
      u=1cm;
      pickup pencircle scaled 2pt;
+     draw (-0.5u, 0)--(10.5u, 0);
+     draw (-0.5u, 1u)--(10.5u, 1u);
      for i=0 upto 10:
        	draw (i*u, 0)--(i*u, u);
      endfor

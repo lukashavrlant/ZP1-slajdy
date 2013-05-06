@@ -134,15 +134,16 @@ adresa = &cislo;
 
 
 \begin{frame}[t,fragile]\frametitle{Ukazatel na typ} 
+\begin{itemize4}
+    \item Ukazatel (angl. pointer) je datový typ, který slouží k uložení adresy v paměti počítače. 
+    \item Jako první musíme do ukazatele uložit onu adresu. 
+\end{itemize4}
 \begin{minted}[linenos=true]{c} 
 char znak = '!';
 int cislo = 1073741824;
 
-char *adresaz; // ukazatel na char
-int *adresac; // ukazatel na int
-
-adresaz = &znak;
-adresac = &cislo;
+char* adresaz = &znak; // ukazatel na char
+int* adresac = &cislo; // ukazatel na int
 \end{minted}
 \begin{figure}[htb]
     \centering
@@ -153,11 +154,11 @@ adresac = &cislo;
 
 \begin{frame}[t,fragile]\frametitle{Zápis hodnoty} 
 \begin{minted}[linenos=true]{c} 
-char *adresaz; 
+char* adresaz; 
 adresaz = &znak;
 *adresaz = '?';
 
-int *adresac; 
+int* adresac; 
 adresac = &cislo;
 *adresac = 666;
 printf("%c, %i\n", znak, cislo);
@@ -176,7 +177,7 @@ printf("%c, %i\n", znak, cislo);
     \item Pokud neinicializujeme adrese ukazatele, může dojít k segmentation fault.
 \end{itemizex}
 \begin{minted}[linenos=true]{c} 
-char *adresa;
+char* adresa;
 *adresa = 10;
 \end{minted}
 
@@ -187,12 +188,24 @@ char *adresa;
 \end{frame}
 
 
+\begin{frame}[t,fragile]\frametitle{Shrnutí syntaxe} 
+    \begin{itemizex}
+        \item \texttt{int cislo;} deklaruje obyčejnou proměnnou typu \texttt{int}.
+        \item \texttt{\&cislo} vrací adresu proměnné \texttt{cislo}.
+        \item \texttt{int* uk;} deklaruje ukazatel na typ \texttt{int}. 
+        \item Do ukazatele musíme vložit adresu, na kterou má ukazovat. To děláme bez hvězdičky: \texttt{uk = \&cislo;}
+        \item Hodnotu na dané adrese čteme pomocí *: \texttt{int fn = *uk;}
+        \item Hodnotu na danou adresu zapíšeme pomocí *: \texttt{*uk = 10;}
+    \end{itemizex}
+\end{frame}
+
+
 \begin{frame}[t,fragile]\frametitle{Použití ukazatele} 
 \begin{itemizex}
     \item Pokud máme ukazatel \texttt{*uk} na proměnnou \texttt{cislo}, tak \texttt{*uk} můžeme používat v jakémkoliv kontextu, ve kterém se může objevit \texttt{cislo}.
 \begin{minted}[linenos=true]{c} 
 int cislo = 10;
-int *uk; 
+int* uk; 
 uk = &cislo;
 printf("%i\n", cislo + 5 + *uk); // 25
 printf("%i\n", *uk * 5); // 50
@@ -203,11 +216,16 @@ printf("%i, %i\n", *uk, cislo); // 11, 11
 \end{frame}
 
 
-\begin{frame}[t,fragile]\frametitle{Předávání hodnotou} 
+\begin{frame}[t,fragile]\frametitle{Předávání hodnotou a odkazem} 
     \begin{itemizey}
         \item Pokud předáváme funkci nějaké argumenty, předávají se hodnotou.
         \item Tj. hodnoty z argumentů se nakopírují do nových proměnných, které odpovídají parametrům funkce.
         \item Funkce tam nemůže změnit původní proměnné. 
+        \item Řešení: nepředáme hodnotu, ale odkaz na proměnné. 
+        \item Pamatujete na \texttt{scanf}? 
+        \begin{minted}[linenos=true]{c} 
+scanf("%i", &cislo);
+        \end{minted}
     \end{itemizey}
 \end{frame}
 
@@ -235,7 +253,7 @@ int main() {
 
 \begin{frame}[t,fragile]\frametitle{Funkční funkce na prohození proměnných} 
 \begin{minted}[linenos=true]{c} 
-void vymen(char *a, char *b) {
+void vymen(char* a, char* b) {
     char temp = *a;
     *a = *b;
     *b = temp;
@@ -290,8 +308,8 @@ int main() {
 \begin{minted}[linenos=true]{c} 
 char p[] = {2, 4, 8};
 short c[] = {500, 600};
-char *ukp = &p[0];
-short *ukc = &c[0];
+char* ukp = &p[0];
+short* ukc = &c[0];
 printf("%i\n", *(ukp+1)); // 4
 printf("%i\n", *(ukc+1)); // 600
 // Jakoby udelal: ukc+(1*velikost_short)
@@ -311,9 +329,9 @@ printf("%i\n", *(ukc+1)); // 600
 
 \begin{minted}[linenos=true]{c} 
 char p[] = {2, 4, 8, 16, 32};
-char *st = p;
-printf("%i, %i\n", p[2], *(st+2)); // 8, 8
-// p[i] je ekvivalentni *(st+i)
+char* st = p;
+printf("%i, %i, %i\n", p[2], *(p+2), *(st+2)); // 8, 8, 8
+// p[i] je ekvivalentni *(p+i)
 \end{minted}
 \begin{figure}[htb]
     \centering
@@ -340,7 +358,7 @@ obrat_pole(&pole[0], 4);
         \item Uvnitř funkce vidíme místo pole ukazatel na první prvek.
         \item S tímto ukazatelem ale můžeme pracovat jako s polem.
         \begin{minted}[linenos=true]{c} 
-void funkce(int *pole) {
+void funkce(int* pole) {
     printf("%i, %i\n", pole[1], *(pole + 1));
 }
 
@@ -356,7 +374,7 @@ int main() {
 
 \begin{frame}[t,fragile]\frametitle{Jak předat část pole} 
 \begin{itemizex}
-    \item Pokud předáme funkci ukazatel na druhý prvek pole, tak volaná funkce bude brát tento druhý prvek jako svůj první.
+    \item Pokud předáme funkci ukazatel na třetí prvek pole, tak volaná funkce bude brát tento třetí prvek jako svůj první.
 \end{itemizex}
 
 \begin{minted}[linenos=true]{c} 
@@ -368,7 +386,7 @@ vypis_pole(pole, delka); // 15 12 0 3 6 9
 \end{minted}
 
 \begin{itemizex}
-    \item Předali jsme funkci ukazatel na druhý prvek.
+    \item Předali jsme funkci ukazatel na třetí prvek.
     \item Funkce tak \uv{viděla} jen část pole: \texttt{\{9, 6, 3, 0\}}.
 \end{itemizex}
 \end{frame}
@@ -381,7 +399,7 @@ vypis_pole(pole, delka); // 15 12 0 3 6 9
     \end{itemizex}
 
     \begin{minted}[linenos=true]{c} 
-int *orez_pole(int *pole, int kolik) {
+int* orez_pole(int* pole, int kolik) {
   return &pole[kolik];
 }
 
@@ -403,7 +421,7 @@ int main() {
     \end{itemizex}
 
 \begin{minted}[linenos=true]{c} 
-int *ukazatel;
+int* ukazatel;
 ukazatel = 0; 
 ukazazel = NULL; // lepsi
 if (ukazatel) {
@@ -414,7 +432,7 @@ if (ukazatel) {
 
 \begin{frame}[t,fragile]\frametitle{Rozděl pole} 
 \begin{minted}[linenos=true]{c} 
-int *rozdel_pole(int *pole, int delka, int oddelovac) {
+int* rozdel_pole(int* pole, int delka, int oddelovac) {
     int i;
     for (i = 0; i < delka; i++)
         if (pole[i] == oddelovac)
@@ -424,9 +442,9 @@ int *rozdel_pole(int *pole, int delka, int oddelovac) {
 
 int main() {
     int pole[] = {0, 3, 6, 9, 12, 15}, delka = 6;
-    int *pole1 = rozdel_pole(pole, delka, 9); // {9, 12, 15}
-    int *pole2 = rozdel_pole(pole, delka, 12); // {12, 15}
-    int *pole3 = rozdel_pole(pole, delka, 5); // NULL
+    int* pole1 = rozdel_pole(pole, delka, 9); // {9, 12, 15}
+    int* pole2 = rozdel_pole(pole, delka, 12); // {12, 15}
+    int* pole3 = rozdel_pole(pole, delka, 5); // NULL
 }
 \end{minted}
 \end{frame}
@@ -437,7 +455,7 @@ int main() {
         \item Operátor refenrence \texttt{\&} vrací adresu proměnné.
         \item Operátor dereference \texttt{*} zjistí hodnotu proměnné na dané adrese. 
         \item Pokud deklarujeme nový ukazatel pomocí \texttt{int *ukaz;}, musíme do něj později uložit adresu, na kterou má ukazovat.
-        \item Pokud má funkce vracet ukazatel, přidáme před název hvězdičku: \texttt{int vrat\_ukazatel() \{...\}}
+        \item Pokud má funkce vracet ukazatel, přidáme za typ hvězdičku: \texttt{int* vrat\_ukazatel() \{...\}}
         \item Identifikátor pole slouží zároveň jako ukazatel na první prvek pole. 
         \item Ukazatel můžeme indexovat stejně jako pole: \texttt{*(pole+3)} a \texttt{pole[3]} je stejné. \texttt{*(ukaz+3)} a \texttt{ukaz[3]} také. 
     \end{itemize4}
